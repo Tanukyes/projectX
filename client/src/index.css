@@ -1,0 +1,21 @@
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Настройки для HTML и body */
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+}
+
+/* Корневой элемент приложения */
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #ffffff;
+}
