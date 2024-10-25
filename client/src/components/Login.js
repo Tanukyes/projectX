@@ -1,60 +1,76 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
+import { apiPost } from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import '../App.css';
+import { AuthContext } from '../contexts/authContext';
+import './Login.css';
 
 function Login() {
-  const [email, setEmail] = useState('');
+  const [emailOrUsername, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { setIsAuth, setUserRole } = useContext(AuthContext);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault(); // предотвращаем перезагрузку страницы
+
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
-        email,
-        password
-      });
+      const response = await apiPost('/api/login', { emailOrUsername, password });
 
-      const token = response.data.access_token;
+      const token = response.access_token;
+      const role = response.role;
+
       if (!token) {
         setError('Не удалось выполнить вход. Пожалуйста, попробуйте снова.');
         return;
       }
 
+      // Сохраняем токен в localStorage
       localStorage.setItem('token', token);
 
-      // Декодируем JWT токен и получаем роль
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const userRole = payload.role ? payload.role.toLowerCase() : '';
+      // Обновляем контекст авторизации вручную после успешного входа
+      setIsAuth(true);
+      setUserRole(role);
 
-        // Логируем роль для проверки правильности
-        console.log('User Role:', userRole);
-
-        // Перенаправление в зависимости от роли пользователя
-        if (userRole === 'admin') {
-          navigate('/admin');
-        } else {
-          navigate('/dashboard');
-        }
-      } catch (error) {
-        console.error('Ошибка при декодировании токена:', error);
-        setError('Неверный токен. Пожалуйста, попробуйте снова.');
+      // Перенаправляем пользователя в зависимости от его роли
+      if (role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
       }
-    } catch (error) {
-      console.error('Ошибка входа:', error);
-      setError('Неверный email или пароль.');
+    } catch (err) {
+      setError('Неверный email/имя пользователя или пароль.'); // сообщение об ошибке без обновления
     }
   };
 
   return (
     <div className="app-container">
       <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Login</button>
+      {error && <p className="error">{error}</p>}
+
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          id="emailOrUsername"
+          name="emailOrUsername"
+          placeholder="Email или Имя пользователя"
+          value={emailOrUsername}
+          autoComplete="username"
+          onChange={(e) => setEmailOrUsername(e.target.value)}
+        />
+
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Пароль"
+          value={password}
+          autoComplete="current-password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button type="submit">Войти</button>
+      </form>
     </div>
   );
 }

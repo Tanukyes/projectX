@@ -1,42 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { useDataLoader } from '../services/dataLoader';
+import './Dashboard.css';
 
 function Dashboard() {
-  const [data, setData] = useState([]);
+  const { data, error, loading } = useDataLoader('/api/dashboard');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.warn("No token found, redirecting to login.");
-        return;
-      }
+  // Если данные еще загружаются
+  if (loading) {
+    return <p>Загрузка данных...</p>;
+  }
 
-      try {
-        const response = await axios.get('http://localhost:5000/dashboard', {
-          withCredentials: true,
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        setData(response.data);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      }
-    };
+  // Если произошла ошибка при загрузке данных
+  if (error) {
+    return <p className="error">{error}</p>;
+  }
 
-    fetchData();
-  }, []);
+  // Проверяем, что данные загружены и содержат пользователя
+  if (!data || !data.user || !data.user.role) {
+    return <p>Ошибка: нет данных для отображения.</p>;
+  }
 
   return (
-    <div>
-      <h2>Dashboard</h2>
-      <ul>
-        {data.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+    <div className="app-container">
+      <h2>Панель управления</h2>
+      <p>{data.message}</p>
+      <p>Роль: {data.user.role}</p> {/* Отображаем роль пользователя */}
     </div>
   );
 }
