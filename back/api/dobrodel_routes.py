@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from ..models import WorkOrder  # модель, которая связана с таблицей dobrodel
 from ..extensions import db
 
-dobrodel_blueprint = Blueprint('dobrodel', __name__)
+dobrodel_blueprint = Blueprint('dobrodel', __name__, url_prefix='/api')
 
 @dobrodel_blueprint.route('/dobrodel', methods=['GET'])
 def get_all_orders():
@@ -33,8 +33,26 @@ def add_order():
     return jsonify(new_order.to_dict()), 201
 
 @dobrodel_blueprint.route('/dobrodel/<int:id>', methods=['DELETE'])
-def delete_order(id):
-    order = WorkOrder.query.get_or_404(id)
-    db.session.delete(order)
-    db.session.commit()
-    return jsonify({"msg": "Order deleted"}), 200
+def delete_work_order(id):
+    order = WorkOrder.query.get(id)
+    if order:
+        db.session.delete(order)
+        db.session.commit()
+        return jsonify({"message": "Запись удалена"}), 200
+    return jsonify({"error": "Запись не найдена"}), 404
+
+# PUT - обновление записи
+@dobrodel_blueprint.route('/dobrodel/<int:id>', methods=['PUT'])
+def update_work_order(id):
+    data = request.get_json()
+    order = WorkOrder.query.get(id)
+    if order:
+        order.order_number = data.get('orderNumber')
+        order.description = data.get('description')
+        order.field = data.get('task')
+        order.date_performed = data.get('date')
+        order.executor = data.get('performer')
+        order.note = data.get('note')
+        db.session.commit()
+        return jsonify(order.to_dict()), 200
+    return jsonify({"error": "Запись не найдена"}), 404

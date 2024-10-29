@@ -19,7 +19,6 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      <h2>Панель управления</h2>
 
       <div className="tabs">
         {showTasksJournal && (
