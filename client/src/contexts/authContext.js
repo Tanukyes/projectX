@@ -13,7 +13,6 @@ const AuthProvider = ({ children }) => {
         const role = getUserRoleFromToken();
         setIsAuth(true);
         setUserRole(role);
-        console.log('Роль пользователя в контексте:', role);  // Лог для проверки роли
       } else {
         setIsAuth(false);
         setUserRole('');
@@ -21,14 +20,8 @@ const AuthProvider = ({ children }) => {
     };
 
     checkAuth();
-
-    // Добавляем обработчик на изменение localStorage (когда токен изменяется)
     window.addEventListener('storage', checkAuth);
-
-    // Чистим обработчик при размонтировании компонента
-    return () => {
-      window.removeEventListener('storage', checkAuth);
-    };
+    return () => window.removeEventListener('storage', checkAuth);
   }, []);
 
   return (

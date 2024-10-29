@@ -1,4 +1,6 @@
-from back import app
+from back import create_app
+
+app = create_app()  # Создаем экземпляр приложения, вызывая функцию create_app
 
 if __name__ == '__main__':
-    app.run(ssl_context='adhoc')
+    app.run

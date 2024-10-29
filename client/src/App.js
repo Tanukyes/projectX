@@ -5,8 +5,8 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import AdminPage from './components/AdminPage';
 import PrivateRoute from './components/PrivateRoute';
-import { AuthProvider } from './contexts/authContext'; // Новый импорт
-import './App.css';  // Подключение глобального CSS
+import { AuthProvider } from './contexts/authContext';
+import './App.css';
 
 function App() {
   return (

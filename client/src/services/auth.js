@@ -1,14 +1,12 @@
-import {jwtDecode} from 'jwt-decode';  // Правильный импорт jwtDecode
+import {jwtDecode} from 'jwt-decode';
 
 export const getUserRoleFromToken = () => {
   const token = localStorage.getItem('token');
-  if (!token) {
-    return null;
-  }
+  if (!token) return null;
 
   try {
     const decoded = jwtDecode(token);
-    return decoded.role || null;  // Возвращаем роль из токена
+    return decoded.role || null;
   } catch (error) {
     console.error("Ошибка декодирования токена:", error);
     return null;

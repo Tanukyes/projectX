@@ -1,9 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css'; // Подключаем стили
-import App from './App'; // Импортируем основной компонент приложения
+import ReactDOM from 'react-dom/client';  // импортируем createRoot
+import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));  // создаем root
 root.render(
   <React.StrictMode>
     <App />
