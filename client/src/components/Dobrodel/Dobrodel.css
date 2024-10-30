@@ -138,9 +138,53 @@
 
 .dobrodel-table td {
   color: #333;
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.popup-content p {
+  white-space: pre-wrap;
 }
 
 .dobrodel-table td[colspan="6"] {
   text-align: center;
   color: #999;
+}
+.task-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.accordion-toggle {
+  border: none;
+  background: none;
+  font-size: 1rem;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+}
+
+.accordion-overlay {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 100%; /* Ширина аккордеона совпадает с input */
+  top: calc(100% + 5px); /* Расположить аккордеон чуть ниже input */
+}
+
+.accordion-item {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.accordion-item:hover {
+  background-color: #f1f1f1;
 }

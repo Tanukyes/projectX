@@ -1,4 +1,4 @@
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 export const getUserRoleFromToken = () => {
   const token = localStorage.getItem('token');
@@ -6,7 +6,20 @@ export const getUserRoleFromToken = () => {
 
   try {
     const decoded = jwtDecode(token);
-    return decoded.role || null;
+    return decoded.sub.role || null; // Извлекаем роль из `sub`
+  } catch (error) {
+    console.error("Ошибка декодирования токена:", error);
+    return null;
+  }
+};
+
+export const getUsernameFromToken = () => {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+
+  try {
+    const decoded = jwtDecode(token);
+    return decoded.sub.username || null; // Извлекаем username из `sub`
   } catch (error) {
     console.error("Ошибка декодирования токена:", error);
     return null;
