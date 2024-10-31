@@ -5,8 +5,12 @@ import { AuthContext } from '../contexts/authContext';
 const PrivateRoute = ({ children, allowedRole }) => {
   const { isAuth, userRole } = useContext(AuthContext);
 
-  if (!isAuth) return <Navigate to="/login" />;
-  if (allowedRole && userRole !== allowedRole) return <Navigate to="/dashboard" />;
+  if (!isAuth){
+    return <Navigate to="/login" />;
+  }
+  if (allowedRole && userRole !== allowedRole) {
+    return <Navigate to="/dashboard"/>;
+  }
 
   return children;
 };

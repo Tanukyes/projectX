@@ -1,35 +1,46 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { getUserRoleFromToken, isAuthenticated, getUsernameFromToken } from '../services/auth';
+import { isAuthenticated, getUserRoleFromToken, getUsernameFromToken, logout } from '../services/auth';
 
+// Создаем контекст аутентификации
 const AuthContext = createContext();
 
+// Провайдер контекста аутентификации
 const AuthProvider = ({ children }) => {
-  const [isAuth, setIsAuth] = useState(false);
-  const [userRole, setUserRole] = useState('');
-  const [username, setUsername] = useState(''); // Добавляем username
+  const [isAuth, setIsAuth] = useState(isAuthenticated());  // Состояние аутентификации
+  const [userRole, setUserRole] = useState(getUserRoleFromToken());  // Роль пользователя
+  const [username, setUsername] = useState(getUsernameFromToken());  // Имя пользователя
 
+  // Проверка аутентификации и обновление состояния
   useEffect(() => {
     const checkAuth = () => {
-      if (isAuthenticated()) {
-        const role = getUserRoleFromToken();
-        const name = getUsernameFromToken(); // Извлекаем username из токена
-        setIsAuth(true);
-        setUserRole(role);
-        setUsername(name);
+      const authStatus = isAuthenticated();
+      setIsAuth(authStatus);
+      if (authStatus) {
+        setUserRole(getUserRoleFromToken());
+        setUsername(getUsernameFromToken());
       } else {
-        setIsAuth(false);
         setUserRole('');
         setUsername('');
       }
     };
 
+    // Проверяем аутентификацию при загрузке и при изменении в localStorage
     checkAuth();
-    window.addEventListener('storage', checkAuth);
+    window.addEventListener('storage', checkAuth); // Следим за изменениями в localStorage
+
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
 
+  // Функция выхода из системы
+  const handleLogout = () => {
+    logout();
+    setIsAuth(false);
+    setUserRole('');
+    setUsername('');
+  };
+
   return (
-    <AuthContext.Provider value={{ isAuth, userRole, username, setIsAuth, setUserRole, setUsername }}>
+    <AuthContext.Provider value={{ isAuth, userRole, username, setIsAuth, setUserRole, setUsername, handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

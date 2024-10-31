@@ -38,31 +38,30 @@ function Login() {
   };
 
   return (
-      <div className="app-container">
-        <h2>Login</h2>
-        {error && <p className="error">{error}</p>}
+    <div className="login-container">
+      <h2>Login</h2>
+      {error && <p className="error">{error}</p>}
 
-        <form onSubmit={handleLogin}>
-          <input
-              type="text"
-              id="emailOrUsername"
-              name="emailOrUsername"
-              placeholder="Email или Имя пользователя"
-              value={emailOrUsername}
-              onChange={(e) => setEmailOrUsername(e.target.value)}
-          />
-          <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Пароль"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit">Войти</button>
-        </form>
-
-      </div>
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          id="emailOrUsername"
+          name="emailOrUsername"
+          placeholder="Email или Имя пользователя"
+          value={emailOrUsername}
+          onChange={(e) => setEmailOrUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Войти</button>
+      </form>
+    </div>
   );
 }
 
