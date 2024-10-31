@@ -4,14 +4,14 @@ import Popup from '../Popup';
 import { AuthContext } from '../../contexts/authContext';
 
 function Dobrodel() {
-  const { username } = useContext(AuthContext); // Получаем username из контекста
+  const { username } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split("T")[0],
     orderNumber: '',
     description: '',
     task: '',
-    performer: username || '', // Устанавливаем username по умолчанию в качестве исполнителя
+    performer: username || '',
     note: ''
   });
 
@@ -22,6 +22,10 @@ function Dobrodel() {
   const [showDialog, setShowDialog] = useState(false);
   const [popupContent, setPopupContent] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+
+  // Новый стейт для поиска
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchColumn, setSearchColumn] = useState('order_number'); // Выбранный столбец для поиска
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
@@ -44,11 +48,10 @@ function Dobrodel() {
     fetchOrders();
   }, [fetchOrders]);
 
-  // Обновляем поле "Исполнитель работ" при изменении имени авторизованного пользователя
   useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
-      performer: username || '', // Задаем пустую строку, если username отсутствует
+      performer: username || '',
     }));
   }, [username]);
 
@@ -60,7 +63,7 @@ function Dobrodel() {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value || '' // Fallback to empty string if value is undefined
+      [name]: value || ''
     }));
   };
 
@@ -176,88 +179,120 @@ function Dobrodel() {
     setError(null);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  const handleSearchColumnChange = (e) => {
+    setSearchColumn(e.target.value);
+  };
+
+  // Фильтруем данные на основе выбранного столбца и запроса
+  const filteredOrders = searchQuery
+    ? orders.filter((order) => {
+        const columnValue = order[searchColumn];
+        return columnValue && columnValue.toLowerCase().includes(searchQuery);
+      })
+    : orders;
+
   if (loading) return <p>Загрузка данных...</p>;
 
   return (
     <div className="dobrodel-container">
       <div className="dobrodel-form">
-        <h3>{editing ? 'Редактировать наряд' : 'Добавить наряд'}</h3>
 
         <label htmlFor="date">Дата выполнения:</label>
         <input
-            type="date"
-            id="date"
-            name="date"
-            value={formData.date}
-            onChange={handleInputChange}
-            max={new Date().toISOString().split("T")[0]}
+          type="date"
+          id="date"
+          name="date"
+          value={formData.date}
+          onChange={handleInputChange}
+          max={new Date().toISOString().split("T")[0]}
         />
 
         <label htmlFor="orderNumber">Номер ИЗМ/НАР:</label>
         <input
-            type="text"
-            id="orderNumber"
-            name="orderNumber"
-            value={formData.orderNumber || ''}
-            onChange={handleInputChange}
+          type="text"
+          id="orderNumber"
+          name="orderNumber"
+          value={formData.orderNumber || ''}
+          onChange={handleInputChange}
         />
 
         <label htmlFor="description">Проводимые работы (описание):</label>
         <textarea
-            id="description"
-            name="description"
-            value={formData.description || ''}
-            onChange={handleInputChange}
+          id="description"
+          name="description"
+          value={formData.description || ''}
+          onChange={handleInputChange}
         ></textarea>
 
         <label htmlFor="task">Задание:</label>
         <input
-            type="text"
-            id="task"
-            name="task"
-            value={formData.task || ''}
-            onChange={handleInputChange}
-            placeholder="Введите задание"
+          type="text"
+          id="task"
+          name="task"
+          value={formData.task || ''}
+          onChange={handleInputChange}
+          placeholder="Введите задание"
         />
 
         <label htmlFor="performer">Исполнитель работ:</label>
         <input
-            type="text"
-            id="performer"
-            name="performer"
-            defaultValue={formData.performer || ''} // Используем defaultValue для неизменяемого поля
-            readOnly // Делаем поле неизменяемым
+          type="text"
+          id="performer"
+          name="performer"
+          defaultValue={formData.performer || ''}
+          readOnly
         />
 
         <label htmlFor="note">Примечание:</label>
         <textarea
-            id="note"
-            name="note"
-            value={formData.note || ''}
-            onChange={handleInputChange}
+          id="note"
+          name="note"
+          value={formData.note || ''}
+          onChange={handleInputChange}
         ></textarea>
 
         {editing ? (
-            <div className="form-buttons-editing">
-              <button onClick={handleSaveEdit}>Сохранить</button>
-              <button onClick={() => setEditing(false)}>Отмена</button>
-            </div>
+          <div className="form-buttons-editing">
+            <button onClick={handleSaveEdit}>Сохранить</button>
+            <button onClick={() => setEditing(false)}>Отмена</button>
+          </div>
         ) : (
-            <div>
-              <div className="form-buttons-top">
-                <button onClick={handleAddOrder}>Добавить</button>
-                <button onClick={handleDeleteOrder}>Удалить</button>
-                <button onClick={fetchOrders}>Обновить</button>
-              </div>
-              <div className="form-buttons-bottom">
-                <button onClick={handleEditOrder}>Редактировать</button>
-                <button onClick={handleOpenDialog}>Выходные формы</button>
-              </div>
+          <div>
+            <div className="form-buttons-top">
+              <button onClick={handleAddOrder}>Добавить</button>
+              <button onClick={handleDeleteOrder}>Удалить</button>
+              <button onClick={fetchOrders}>Обновить</button>
             </div>
+            <div className="form-buttons-bottom">
+              <button onClick={handleEditOrder}>Редактировать</button>
+              <button onClick={handleOpenDialog}>Выходные формы</button>
+            </div>
+          </div>
         )}
       </div>
 
       <div className="dobrodel-table">
+        <div className="search-container">
+          <label htmlFor="searchColumn">Столбец для поиска:</label>
+          <select id="searchColumn" value={searchColumn} onChange={handleSearchColumnChange} className="search-select">
+            <option value="order_number">Номер наряда</option>
+            <option value="description">Описание</option>
+            <option value="field">Задание</option>
+            <option value="date_performed">Дата выполнения</option>
+            <option value="executor">Исполнитель</option>
+          </select>
+          <input
+              type="text"
+              placeholder="Введите текст для поиска..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="search-input"
+          />
+        </div>
         <table>
           <thead>
           <tr>
@@ -270,8 +305,8 @@ function Dobrodel() {
           </tr>
           </thead>
           <tbody>
-          {orders.length > 0 ? (
-              orders.map((order) => (
+          {filteredOrders.length > 0 ? (
+              filteredOrders.map((order) => (
                   <tr key={order.id} onClick={() => setSelectedOrderId(order.id)}>
                     <td>{order.order_number}</td>
                     <td onClick={(e) => handlePopupOpen(e, order.description)}>{order.description}</td>
@@ -303,15 +338,15 @@ function Dobrodel() {
               title="Выходные формы"
               content={<p>Здесь можно добавить содержимое для диалогового окна.</p>}
               onClose={() => setShowDialog(false)}
-        />
+          />
       )}
 
       {error && (
-        <Popup
-          title="Ошибка"
-          content={<p>{error}</p>}
-          onClose={closeErrorPopup}
-        />
+          <Popup
+              title="Ошибка"
+              content={<p>{error}</p>}
+              onClose={closeErrorPopup}
+          />
       )}
     </div>
   );
