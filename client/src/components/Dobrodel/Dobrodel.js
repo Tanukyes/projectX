@@ -1,4 +1,3 @@
-// Dobrodel.js
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import './Dobrodel.css';
 import Popup from '../Popup';
@@ -9,6 +8,7 @@ import { BsDatabaseFillAdd } from 'react-icons/bs';
 import { TbDatabaseEdit } from 'react-icons/tb';
 import { ImCancelCircle } from 'react-icons/im';
 import { MdDelete } from 'react-icons/md';
+import * as XLSX from 'xlsx';
 
 function Dobrodel() {
   const { username } = useContext(AuthContext);
@@ -27,9 +27,8 @@ function Dobrodel() {
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showDialog, setShowDialog] = useState(false);
-  const [popupContent, setPopupContent] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [popupContent, setPopupContent] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // Состояние для подтверждения удаления
   const [showExportDialog, setShowExportDialog] = useState(false); // Состояние для окна экспорта
 
@@ -70,14 +69,22 @@ function Dobrodel() {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('ru-RU'); // форматирует как ДД.ММ.ГГГГ
+    return date.toLocaleDateString('ru-RU');
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === "date") {
+        const inputDate = new Date(value);
+        const today = new Date();
+        if (inputDate > today) {
+            setError("Дата не может быть больше текущей.");
+            return;
+        }
+    }
     setFormData((prevData) => ({
-      ...prevData,
-      [name]: value || ''
+        ...prevData,
+        [name]: value || ''
     }));
   };
 
@@ -116,7 +123,7 @@ function Dobrodel() {
       setError("Выберите запись для удаления");
       return;
     }
-    setShowDeleteConfirm(true); // Показать попап подтверждения удаления
+    setShowDeleteConfirm(true);
   };
 
   const handleDeleteOrder = async () => {
@@ -130,7 +137,7 @@ function Dobrodel() {
       setOrders(orders.filter((order) => order.id !== selectedOrderId));
       setSelectedOrderId(null);
       setSelectedRow(null);
-      setShowDeleteConfirm(false); // Закрыть попап после удаления
+      setShowDeleteConfirm(false);
     } catch (err) {
       setError(err.message || 'Ошибка удаления записи');
     }
@@ -196,11 +203,22 @@ function Dobrodel() {
     setShowPopup(false);
   };
 
-  const handleOpenExportDialog = () => setShowExportDialog(true); // Открытие окна экспорта
+  const handleOpenExportDialog = () => setShowExportDialog(true);
 
-  const handleExport = (filters) => {
-    console.log("Экспорт с фильтрами:", filters); // Реализуйте логику экспорта
-    setShowExportDialog(false);
+  const handleExportToExcel = (filteredOrders) => {
+    const dataToExport = filteredOrders.map(order => ({
+      "Номер наряда": order.order_number,
+      "Описание": order.description,
+      "Задание": order.field,
+      "Дата": formatDate(order.date_performed),
+      "Исполнитель": order.executor,
+      "Примечание": order.note
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Dobrodel");
+    XLSX.writeFile(workbook, "Dobrodel.xlsx");
   };
 
   const handleCancelEdit = () => {
@@ -241,7 +259,7 @@ function Dobrodel() {
   return (
     <div className="dobrodel-container">
       <div className="dobrodel-form">
-        <label htmlFor="date">Дата выполнения:</label>
+        <label htmlFor="date">Дата:</label>
         <input
           type="date"
           id="date"
@@ -333,7 +351,7 @@ function Dobrodel() {
             <option value="order_number">Номер наряда</option>
             <option value="description">Описание</option>
             <option value="field">Задание</option>
-            <option value="date_performed">Дата выполнения</option>
+            <option value="date_performed">Дата</option>
             <option value="executor">Исполнитель</option>
           </select>
           <input
@@ -358,7 +376,7 @@ function Dobrodel() {
                 <th>Номер наряда</th>
                 <th>Описание</th>
                 <th>Задание</th>
-                <th>Дата выполнения</th>
+                <th>Дата</th>
                 <th>Исполнитель</th>
                 <th>Примечание</th>
               </tr>
@@ -398,7 +416,11 @@ function Dobrodel() {
       )}
 
       {showExportDialog && (
-        <ExportPopup onClose={() => setShowExportDialog(false)} onExport={handleExport} />
+        <ExportPopup
+          orders={filteredOrders}
+          onClose={() => setShowExportDialog(false)}
+          onExport={handleExportToExcel}
+        />
       )}
 
       {showDeleteConfirm && (
@@ -415,7 +437,7 @@ function Dobrodel() {
               </button>
             </>
           }
-          onClose={() => setShowDeleteConfirm(false)} // Закрытие попапа с крестиком
+          onClose={() => setShowDeleteConfirm(false)}
         />
       )}
 
