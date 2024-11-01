@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import './Dobrodel.css';
 import Popup from '../Popup';
-import ExportPopup from './ExportPopup'; // Подключаем ExportPopup
+import ExportPopup from './ExportPopup';
 import { AuthContext } from '../../contexts/authContext';
-import { FaSync, FaFileExcel, FaRegSave } from 'react-icons/fa';
+import { FaSync, FaFileExcel, FaRegSave, FaFilter } from 'react-icons/fa'; // импорт иконки фильтра
 import { BsDatabaseFillAdd } from 'react-icons/bs';
 import { TbDatabaseEdit } from 'react-icons/tb';
 import { ImCancelCircle } from 'react-icons/im';
 import { MdDelete } from 'react-icons/md';
 import * as XLSX from 'xlsx';
+import patterns from './patterns.json';
 
 function Dobrodel() {
   const { username } = useContext(AuthContext);
@@ -29,11 +30,11 @@ function Dobrodel() {
   const [loading, setLoading] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const [popupContent, setPopupContent] = useState("");
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // Состояние для подтверждения удаления
-  const [showExportDialog, setShowExportDialog] = useState(false); // Состояние для окна экспорта
-
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showExportDialog, setShowExportDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchColumn, setSearchColumn] = useState('order_number');
+  const [showPatternDropdown, setShowPatternDropdown] = useState(false); // для показа/скрытия выпадающего списка паттернов
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
@@ -75,17 +76,32 @@ function Dobrodel() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "date") {
-        const inputDate = new Date(value);
-        const today = new Date();
-        if (inputDate > today) {
-            setError("Дата не может быть больше текущей.");
-            return;
-        }
+      const inputDate = new Date(value);
+      const today = new Date();
+      if (inputDate > today) {
+        setError("Дата не может быть больше текущей.");
+        return;
+      }
     }
     setFormData((prevData) => ({
-        ...prevData,
-        [name]: value || ''
+      ...prevData,
+      [name]: value || ''
     }));
+  };
+
+  const handleTaskChange = (e) => {
+    setFormData({
+      ...formData,
+      task: e.target.value
+    });
+  };
+
+  const handlePatternSelect = (pattern) => {
+    setFormData({
+      ...formData,
+      task: pattern
+    });
+    setShowPatternDropdown(false); // Закрываем dropdown после выбора
   };
 
   const getCurrentDate = () => new Date().toISOString().split("T")[0];
@@ -287,14 +303,32 @@ function Dobrodel() {
         ></textarea>
 
         <label htmlFor="task">Задание:</label>
-        <input
-          type="text"
-          id="task"
-          name="task"
-          value={formData.task || ''}
-          onChange={handleInputChange}
-          placeholder="Введите задание"
-        />
+        <div className="task-filter-container">
+          <input
+            type="text"
+            name="task"
+            placeholder="Введите задание или выберите из списка"
+            value={formData.task}
+            onChange={handleTaskChange}
+          />
+          <button className="filter-button" onClick={() => setShowPatternDropdown(!showPatternDropdown)}>
+            <FaFilter />
+          </button>
+        </div>
+
+        {showPatternDropdown && (
+          <div className="pattern-dropdown">
+            {patterns.patterns.map((pattern, index) => (
+              <div
+                key={index}
+                className="pattern-option"
+                onClick={() => handlePatternSelect(pattern)}
+              >
+                {pattern}
+              </div>
+            ))}
+          </div>
+        )}
 
         <label htmlFor="performer">Исполнитель работ:</label>
         <input
@@ -369,16 +403,17 @@ function Dobrodel() {
           </button>
         </div>
 
+
         <div className="dobrodel-table">
           <table>
             <thead>
               <tr>
-                <th>Номер наряда</th>
-                <th>Описание</th>
-                <th>Задание</th>
-                <th>Дата</th>
-                <th>Исполнитель</th>
-                <th>Примечание</th>
+                <th className="bold-text">Номер наряда</th>
+                <th className="bold-text">Описание</th>
+                <th className="bold-text">Задание</th>
+                <th className="bold-text">Дата</th>
+                <th className="bold-text">Исполнитель</th>
+                <th className="bold-text">Примечание</th>
               </tr>
             </thead>
             <tbody>
@@ -389,12 +424,12 @@ function Dobrodel() {
                     className={order.id === selectedRow ? 'selected-row' : ''}
                     onClick={() => handleRowClick(order.id)}
                   >
-                    <td>{order.order_number}</td>
-                    <td onClick={(e) => handlePopupOpen(e, order.description)}>{order.description}</td>
-                    <td onClick={(e) => handlePopupOpen(e, order.field)}>{order.field}</td>
-                    <td>{formatDate(order.date_performed)}</td>
-                    <td>{order.executor}</td>
-                    <td onClick={(e) => handlePopupOpen(e, order.note)}>{order.note}</td>
+                    <td className="centered-text">{order.order_number}</td>
+                    <td className="centered-text" onClick={(e) => handlePopupOpen(e, order.description)}>{order.description}</td>
+                    <td className="centered-text" onClick={(e) => handlePopupOpen(e, order.field)}>{order.field}</td>
+                    <td className="centered-text">{formatDate(order.date_performed)}</td>
+                    <td className="centered-text">{order.executor}</td>
+                    <td className="centered-text" onClick={(e) => handlePopupOpen(e, order.note)}>{order.note}</td>
                   </tr>
                 ))
               ) : (
@@ -410,7 +445,8 @@ function Dobrodel() {
       {showPopup && (
         <Popup
           title="Полный текст"
-          content={<p style={{ whiteSpace: 'pre-wrap' }}>{popupContent}</p>}
+          content={<p style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+  {popupContent}</p>}
           onClose={handlePopupClose}
         />
       )}

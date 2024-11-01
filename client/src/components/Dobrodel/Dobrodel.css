@@ -13,6 +13,14 @@
   align-items: stretch;
 }
 
+.bold-text {
+  font-weight: bold;
+}
+
+.centered-text {
+  text-align: center;
+}
+
 /* Контейнер для формы */
 .dobrodel-form {
   display: flex;
@@ -25,41 +33,86 @@
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  gap: 10px; /* Равномерные отступы между элементами */
-  justify-content: space-between; /* Равномерное распределение по высоте */
+  gap: 10px;
+  justify-content: space-between;
 }
 
-/* Метки (labels) */
 .dobrodel-form label {
   font-size: 14px;
   color: #555;
-  margin-bottom: 3px; /* Уменьшение отступов между меткой и полем */
+  font-weight: bold; /* Сделать текст жирным */
+  margin-bottom: 3px;
 }
 
-/* Поля ввода и текстовые области */
 .dobrodel-form input,
-.dobrodel-form textarea {
+.dobrodel-form textarea,
+.task-select {
   width: 100%;
-  padding: 6px 8px; /* Уменьшение внутреннего отступа */
+  padding: 6px 8px;
   border: 1px solid #ddd;
   border-radius: 6px;
   background-color: #f9f9f9;
   transition: border-color 0.3s ease;
   box-sizing: border-box;
-  margin-bottom: 10px; /* Уменьшение промежутков */
+  margin-bottom: 10px;
 }
 
 .dobrodel-form input:focus,
-.dobrodel-form textarea:focus {
+.dobrodel-form textarea:focus,
+.task-select:focus {
   border-color: #007bff;
+}
+
+/* CSS для контейнера задания с иконкой фильтра */
+.task-filter-container {
+  display: flex;
+  align-items: center;
+  position: relative; /* Для позиционирования pattern-dropdown */
+}
+
+.filter-button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: color 0.3s ease;
+}
+
+.filter-button:hover {
+  color: #007bff; /* Синий цвет при наведении */
+}
+
+.pattern-dropdown {
+  position: absolute;
+  top: 57%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  max-height: 150px;
+  width: 100%;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  margin-top: 5px;
+}
+
+.pattern-option {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.pattern-option:hover {
+  background-color: #f0f0f0;
 }
 
 /* Кнопки формы */
 .form-buttons {
   display: flex;
-  gap: 10px; /* Уменьшение промежутков */
+  gap: 10px;
   justify-content: center;
-  margin-top: auto; /* Отправить кнопки вниз */
+  margin-top: auto;
 }
 
 .form-buttons button {
@@ -139,14 +192,15 @@
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  height: 76vh;
+  overflow-y: auto; /* Прокрутка по вертикали */
+  height: 76vh; /* Задать фиксированную высоту */
   padding: 10px;
   box-sizing: border-box;
 }
 
 .dobrodel-table table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
@@ -155,7 +209,10 @@
   padding: 10px 12px;
   border: 1px solid #ddd;
   font-size: 14px;
-  transition: background-color 0.2s ease;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dobrodel-table th {
