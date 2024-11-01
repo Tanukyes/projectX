@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import './Dobrodel.css';
 import Popup from '../Popup';
+import ExportPopup from './ExportPopup'; // Подключаем ExportPopup
 import { AuthContext } from '../../contexts/authContext';
 import { FaSync, FaFileExcel, FaRegSave } from 'react-icons/fa';
 import { BsDatabaseFillAdd } from 'react-icons/bs';
@@ -30,6 +31,7 @@ function Dobrodel() {
   const [popupContent, setPopupContent] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // Состояние для подтверждения удаления
+  const [showExportDialog, setShowExportDialog] = useState(false); // Состояние для окна экспорта
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchColumn, setSearchColumn] = useState('order_number');
@@ -66,6 +68,11 @@ function Dobrodel() {
     return orders.sort((a, b) => new Date(b.date_performed) - new Date(a.date_performed));
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU'); // форматирует как ДД.ММ.ГГГГ
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -83,7 +90,7 @@ function Dobrodel() {
       ? formData.note
         ? `${getCurrentTime()}. ${formData.note}`
         : getCurrentTime()
-      : `(добавлено ${today}) ${formData.note || ""}`;
+      : `(добавлено ${formatDate(today)}) ${formData.note || ""}`;
 
     const updatedFormData = { ...formData, note: noteWithDate };
 
@@ -189,8 +196,25 @@ function Dobrodel() {
     setShowPopup(false);
   };
 
-  const handleOpenDialog = () => {
-    setShowDialog(true);
+  const handleOpenExportDialog = () => setShowExportDialog(true); // Открытие окна экспорта
+
+  const handleExport = (filters) => {
+    console.log("Экспорт с фильтрами:", filters); // Реализуйте логику экспорта
+    setShowExportDialog(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditing(false);
+    setFormData({
+      date: getCurrentDate(),
+      orderNumber: '',
+      description: '',
+      task: '',
+      performer: username,
+      note: ''
+    });
+    setSelectedOrderId(null);
+    setSelectedRow(null);
   };
 
   const closeErrorPopup = () => {
@@ -277,7 +301,7 @@ function Dobrodel() {
               <button onClick={handleSaveEdit} title="Сохранить" className="save-button">
                 <FaRegSave />
               </button>
-              <button onClick={() => setEditing(false)} title="Отмена" className="cancel-button">
+              <button onClick={handleCancelEdit} title="Отмена" className="cancel-button">
                 <ImCancelCircle />
               </button>
             </>
@@ -322,7 +346,7 @@ function Dobrodel() {
           <button className="refresh-button" onClick={fetchOrders} title="Обновить">
             <FaSync />
           </button>
-          <button className="excel-button" onClick={handleOpenDialog} title="Экспорт в Excel">
+          <button className="excel-button" onClick={handleOpenExportDialog} title="Экспорт в Excel">
             <FaFileExcel />
           </button>
         </div>
@@ -350,7 +374,7 @@ function Dobrodel() {
                     <td>{order.order_number}</td>
                     <td onClick={(e) => handlePopupOpen(e, order.description)}>{order.description}</td>
                     <td onClick={(e) => handlePopupOpen(e, order.field)}>{order.field}</td>
-                    <td>{order.date_performed}</td>
+                    <td>{formatDate(order.date_performed)}</td>
                     <td>{order.executor}</td>
                     <td onClick={(e) => handlePopupOpen(e, order.note)}>{order.note}</td>
                   </tr>
@@ -373,31 +397,27 @@ function Dobrodel() {
         />
       )}
 
-      {showDialog && (
-        <Popup
-          title="Выгрузка в Excel"
-          content={<p>Здесь можно добавить содержимое для диалогового окна.</p>}
-          onClose={() => setShowDialog(false)}
-        />
+      {showExportDialog && (
+        <ExportPopup onClose={() => setShowExportDialog(false)} onExport={handleExport} />
       )}
 
       {showDeleteConfirm && (
-  <Popup
-    title="Подтверждение удаления"
-    content={<p>Вы уверены, что хотите удалить запись?</p>}
-    controls={
-      <>
-        <button onClick={handleDeleteOrder} className="confirm-button">
-          Подтвердить
-        </button>
-        <button onClick={() => setShowDeleteConfirm(false)} className="cancel-button1">
-          Отмена
-        </button>
-      </>
-    }
-    onClose={() => setShowDeleteConfirm(false)} // Закрытие попапа с крестиком
-  />
-)}
+        <Popup
+          title="Подтверждение удаления"
+          content={<p>Вы уверены, что хотите удалить запись?</p>}
+          controls={
+            <>
+              <button onClick={handleDeleteOrder} className="confirm-button">
+                Подтвердить
+              </button>
+              <button onClick={() => setShowDeleteConfirm(false)} className="cancel-button1">
+                Отмена
+              </button>
+            </>
+          }
+          onClose={() => setShowDeleteConfirm(false)} // Закрытие попапа с крестиком
+        />
+      )}
 
       {error && (
         <Popup
