@@ -1,7 +1,13 @@
+// Dobrodel.js
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import './Dobrodel.css';
 import Popup from '../Popup';
 import { AuthContext } from '../../contexts/authContext';
+import { FaSync, FaFileExcel, FaRegSave } from 'react-icons/fa';
+import { BsDatabaseFillAdd } from 'react-icons/bs';
+import { TbDatabaseEdit } from 'react-icons/tb';
+import { ImCancelCircle } from 'react-icons/im';
+import { MdDelete } from 'react-icons/md';
 
 function Dobrodel() {
   const { username } = useContext(AuthContext);
@@ -16,16 +22,17 @@ function Dobrodel() {
   });
 
   const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [popupContent, setPopupContent] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // Состояние для подтверждения удаления
 
-  // Новый стейт для поиска
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchColumn, setSearchColumn] = useState('order_number'); // Выбранный столбец для поиска
+  const [searchColumn, setSearchColumn] = useState('order_number');
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
@@ -97,12 +104,15 @@ function Dobrodel() {
     }
   };
 
-  const handleDeleteOrder = async () => {
+  const confirmDeleteOrder = () => {
     if (!selectedOrderId) {
       setError("Выберите запись для удаления");
       return;
     }
+    setShowDeleteConfirm(true); // Показать попап подтверждения удаления
+  };
 
+  const handleDeleteOrder = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/dobrodel/${selectedOrderId}`, {
         method: 'DELETE',
@@ -112,6 +122,8 @@ function Dobrodel() {
       }
       setOrders(orders.filter((order) => order.id !== selectedOrderId));
       setSelectedOrderId(null);
+      setSelectedRow(null);
+      setShowDeleteConfirm(false); // Закрыть попап после удаления
     } catch (err) {
       setError(err.message || 'Ошибка удаления записи');
     }
@@ -154,9 +166,15 @@ function Dobrodel() {
       setEditing(false);
       setFormData({ date: getCurrentDate(), orderNumber: '', description: '', task: '', performer: username, note: '' });
       setSelectedOrderId(null);
+      setSelectedRow(null);
     } catch (err) {
       setError(err.message || 'Ошибка сохранения изменений');
     }
+  };
+
+  const handleRowClick = (orderId) => {
+    setSelectedOrderId(orderId);
+    setSelectedRow(orderId);
   };
 
   const handlePopupOpen = (e, text) => {
@@ -197,111 +215,121 @@ function Dobrodel() {
   if (loading) return <p>Загрузка данных...</p>;
 
   return (
-      <div className="dobrodel-container">
-        <div className="dobrodel-form">
+    <div className="dobrodel-container">
+      <div className="dobrodel-form">
+        <label htmlFor="date">Дата выполнения:</label>
+        <input
+          type="date"
+          id="date"
+          name="date"
+          value={formData.date}
+          onChange={handleInputChange}
+          max={new Date().toISOString().split("T")[0]}
+        />
 
-          <label htmlFor="date">Дата выполнения:</label>
-          <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleInputChange}
-              max={new Date().toISOString().split("T")[0]}
-          />
+        <label htmlFor="orderNumber">Номер ИЗМ/НАР:</label>
+        <input
+          type="text"
+          id="orderNumber"
+          name="orderNumber"
+          value={formData.orderNumber || ''}
+          onChange={handleInputChange}
+        />
 
-          <label htmlFor="orderNumber">Номер ИЗМ/НАР:</label>
-          <input
-              type="text"
-              id="orderNumber"
-              name="orderNumber"
-              value={formData.orderNumber || ''}
-              onChange={handleInputChange}
-          />
+        <label htmlFor="description">Проводимые работы (описание):</label>
+        <textarea
+          id="description"
+          name="description"
+          value={formData.description || ''}
+          onChange={handleInputChange}
+        ></textarea>
 
-          <label htmlFor="description">Проводимые работы (описание):</label>
-          <textarea
-              id="description"
-              name="description"
-              value={formData.description || ''}
-              onChange={handleInputChange}
-          ></textarea>
+        <label htmlFor="task">Задание:</label>
+        <input
+          type="text"
+          id="task"
+          name="task"
+          value={formData.task || ''}
+          onChange={handleInputChange}
+          placeholder="Введите задание"
+        />
 
-          <label htmlFor="task">Задание:</label>
-          <input
-              type="text"
-              id="task"
-              name="task"
-              value={formData.task || ''}
-              onChange={handleInputChange}
-              placeholder="Введите задание"
-          />
+        <label htmlFor="performer">Исполнитель работ:</label>
+        <input
+          type="text"
+          id="performer"
+          name="performer"
+          defaultValue={formData.performer || ''}
+          readOnly
+        />
 
-          <label htmlFor="performer">Исполнитель работ:</label>
-          <input
-              type="text"
-              id="performer"
-              name="performer"
-              defaultValue={formData.performer || ''}
-              readOnly
-          />
+        <label htmlFor="note">Примечание:</label>
+        <textarea
+          id="note"
+          name="note"
+          value={formData.note || ''}
+          onChange={handleInputChange}
+        ></textarea>
 
-          <label htmlFor="note">Примечание:</label>
-          <textarea
-              id="note"
-              name="note"
-              value={formData.note || ''}
-              onChange={handleInputChange}
-          ></textarea>
-
+        <div className="form-buttons">
           {editing ? (
-              <div className="form-buttons-editing">
-                <button onClick={handleSaveEdit}>Сохранить</button>
-                <button onClick={() => setEditing(false)}>Отмена</button>
-              </div>
+            <>
+              <button onClick={handleSaveEdit} title="Сохранить" className="save-button">
+                <FaRegSave />
+              </button>
+              <button onClick={() => setEditing(false)} title="Отмена" className="cancel-button">
+                <ImCancelCircle />
+              </button>
+            </>
           ) : (
-              <div>
-                <div className="form-buttons-top">
-                  <button onClick={handleAddOrder}>Добавить</button>
-                  <button onClick={handleDeleteOrder}>Удалить</button>
-                  <button onClick={fetchOrders}>Обновить</button>
-                </div>
-                <div className="form-buttons-bottom">
-                  <button onClick={handleEditOrder}>Редактировать</button>
-                  <button onClick={handleOpenDialog}>Excel</button>
-                </div>
-              </div>
+            <>
+              <button onClick={handleAddOrder} title="Добавить" className="add-button">
+                <BsDatabaseFillAdd />
+              </button>
+              <button onClick={handleEditOrder} title="Редактировать" className="edit-button">
+                <TbDatabaseEdit />
+              </button>
+              <button onClick={confirmDeleteOrder} title="Удалить" className="delete-button">
+                <MdDelete />
+              </button>
+            </>
           )}
         </div>
+      </div>
 
-        <div style={{flexGrow: 1}}>
-          <div className="search-container">
-            <label htmlFor="searchColumn">Поиск:</label>
-            <select
-                id="searchColumn"
-                value={searchColumn}
-                onChange={handleSearchColumnChange}
-                className="search-select"
-            >
-              <option value="order_number">Номер наряда</option>
-              <option value="description">Описание</option>
-              <option value="field">Задание</option>
-              <option value="date_performed">Дата выполнения</option>
-              <option value="executor">Исполнитель</option>
-            </select>
-            <input
-                type="text"
-                placeholder="Введите текст для поиска..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-                className="search-input"
-            />
-          </div>
+      <div style={{ flexGrow: 1 }}>
+        <div className="search-container">
+          <label htmlFor="searchColumn">Поиск:</label>
+          <select
+            id="searchColumn"
+            value={searchColumn}
+            onChange={handleSearchColumnChange}
+            className="search-select"
+          >
+            <option value="order_number">Номер наряда</option>
+            <option value="description">Описание</option>
+            <option value="field">Задание</option>
+            <option value="date_performed">Дата выполнения</option>
+            <option value="executor">Исполнитель</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Введите текст для поиска..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="search-input"
+          />
+          <button className="refresh-button" onClick={fetchOrders} title="Обновить">
+            <FaSync />
+          </button>
+          <button className="excel-button" onClick={handleOpenDialog} title="Экспорт в Excel">
+            <FaFileExcel />
+          </button>
+        </div>
 
-
-          <div className="dobrodel-table">
-            <table>
-              <thead>
+        <div className="dobrodel-table">
+          <table>
+            <thead>
               <tr>
                 <th>Номер наряда</th>
                 <th>Описание</th>
@@ -310,57 +338,76 @@ function Dobrodel() {
                 <th>Исполнитель</th>
                 <th>Примечание</th>
               </tr>
-              </thead>
-              <tbody>
+            </thead>
+            <tbody>
               {filteredOrders.length > 0 ? (
-                  filteredOrders.map((order) => (
-                      <tr key={order.id} onClick={() => setSelectedOrderId(order.id)}>
-                        <td>{order.order_number}</td>
-                        <td onClick={(e) => handlePopupOpen(e, order.description)}>{order.description}</td>
-                        <td onClick={(e) => handlePopupOpen(e, order.field)}>{order.field}</td>
-                        <td>{order.date_performed}</td>
-                        <td>{order.executor}</td>
-                        <td onClick={(e) => handlePopupOpen(e, order.note)}>{order.note}</td>
-                      </tr>
-                  ))
-              ) : (
-                  <tr>
-                    <td colSpan="6">Нет данных для отображения</td>
+                filteredOrders.map((order) => (
+                  <tr
+                    key={order.id}
+                    className={order.id === selectedRow ? 'selected-row' : ''}
+                    onClick={() => handleRowClick(order.id)}
+                  >
+                    <td>{order.order_number}</td>
+                    <td onClick={(e) => handlePopupOpen(e, order.description)}>{order.description}</td>
+                    <td onClick={(e) => handlePopupOpen(e, order.field)}>{order.field}</td>
+                    <td>{order.date_performed}</td>
+                    <td>{order.executor}</td>
+                    <td onClick={(e) => handlePopupOpen(e, order.note)}>{order.note}</td>
                   </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6">Нет данных для отображения</td>
+                </tr>
               )}
-              </tbody>
-            </table>
-          </div>
+            </tbody>
+          </table>
         </div>
+      </div>
 
-          {showPopup && (
-              <Popup
-                  title="Полный текст"
-                  content={<p style={{whiteSpace: 'pre-wrap', wordWrap: 'break-word', overflowWrap: 'break-word'}}>
-                    {popupContent}
-                  </p>
-                  }
-                  onClose={handlePopupClose}
-              />
-          )}
+      {showPopup && (
+        <Popup
+          title="Полный текст"
+          content={<p style={{ whiteSpace: 'pre-wrap' }}>{popupContent}</p>}
+          onClose={handlePopupClose}
+        />
+      )}
 
-          {showDialog && (
-              <Popup
-                  title="Выгрузка в Excel"
-                  content={<p>Здесь можно добавить содержимое для диалогового окна.</p>}
-                  onClose={() => setShowDialog(false)}
-              />
-          )}
+      {showDialog && (
+        <Popup
+          title="Выгрузка в Excel"
+          content={<p>Здесь можно добавить содержимое для диалогового окна.</p>}
+          onClose={() => setShowDialog(false)}
+        />
+      )}
 
-          {error && (
-              <Popup
-                  title="Ошибка"
-                  content={<p>{error}</p>}
-                  onClose={closeErrorPopup}
-              />
-          )}
-        </div>
-        );
-        }
+      {showDeleteConfirm && (
+  <Popup
+    title="Подтверждение удаления"
+    content={<p>Вы уверены, что хотите удалить запись?</p>}
+    controls={
+      <>
+        <button onClick={handleDeleteOrder} className="confirm-button">
+          Подтвердить
+        </button>
+        <button onClick={() => setShowDeleteConfirm(false)} className="cancel-button1">
+          Отмена
+        </button>
+      </>
+    }
+    onClose={() => setShowDeleteConfirm(false)} // Закрытие попапа с крестиком
+  />
+)}
 
-        export default Dobrodel;
+      {error && (
+        <Popup
+          title="Ошибка"
+          content={<p>{error}</p>}
+          onClose={closeErrorPopup}
+        />
+      )}
+    </div>
+  );
+}
+
+export default Dobrodel;

@@ -8,11 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Login.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Login.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/PrivateRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/PrivateRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/contexts/authContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/contexts/authContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/services/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Popup.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Popup.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Popup.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +172,7 @@
       <workItem from="1728976896942" duration="28589000" />
       <workItem from="1729597282796" duration="3742000" />
       <workItem from="1729682234143" duration="68667000" />
-      <workItem from="1730273418024" duration="26838000" />
+      <workItem from="1730273418024" duration="36890000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <option name="closed" value="true" />
@@ -225,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730365552064</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="1">
+      <option name="closed" value="true" />
+      <created>1730382605044</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1730382605044</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
