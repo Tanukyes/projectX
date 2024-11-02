@@ -1,33 +1,114 @@
+/* Основной контейнер Dashboard */
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Контейнер панели управления занимает всю высоту экрана */
-  padding: 20px;
-  box-sizing: border-box; /* Учитываем padding внутри высоты */
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  height: 97vh;
+  box-sizing: border-box;
 }
 
+/* Секция tabs для заголовка и иконки меню */
 .tabs {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between; /* Заголовок слева, меню справа */
+  align-items: center;
+  position: relative;
   margin-bottom: 10px;
-}
-
-.tabs button {
-  margin-right: 10px;
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
+}
+
+/* Заголовок активной вкладки */
+.tab-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000000;
+  margin: 0;
+}
+
+/* Иконка меню */
+.menu-icon {
+  font-size: 24px;
+  color: black;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.tabs button.active {
-  background-color: #0056b3;
+.menu-icon:hover {
+  color: #007bff; /* Цвет при наведении */
 }
 
-.tab-content {
-  flex-grow: 1; /* Растягиваем содержимое на всю оставшуюся высоту */
+/* Выпадающее меню */
+.dropdown-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
   display: flex;
   flex-direction: column;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 10;
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  padding: 10px;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: left;
+}
+
+.dropdown-menu button:hover {
+  color: #007bff; /* Синий цвет при наведении */
+}
+
+.dropdown-menu .logout-button:hover {
+  color: red; /* Красный цвет при наведении на кнопку "Выход" */
+}
+
+/* Контент для выбранной вкладки */
+.tab-content {
+  flex-grow: 1;
+  border-radius: 8px;
+}
+
+/* Стили текста внутри tab-content */
+.tab-content h3 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.tab-content p {
+  font-size: 16px;
+  color: #666;
+}
+
+/* Обработка состояния загрузки и ошибки */
+.error {
+  color: red;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Адаптивность для меньших экранов */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 15px;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+    right: auto;
+    left: 0;
+  }
+
+  .tab-content {
+    padding: 15px;
+  }
 }

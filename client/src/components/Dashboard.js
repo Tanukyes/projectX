@@ -2,41 +2,53 @@ import React, { useState, useContext } from 'react';
 import { useDataLoader } from '../services/dataLoader';
 import { AuthContext } from '../contexts/authContext';
 import './Dashboard.css';
-import Dobrodel from './Dobrodel/Dobrodel';  // Импортируем компонент Dobrodel
+import Dobrodel from './Dobrodel/Dobrodel'; // Импортируем компонент Dobродел
+import { AiOutlineMenu } from 'react-icons/ai';
 
 function Dashboard() {
   const { error, loading } = useDataLoader('/api/dashboard');
-  const { userRole } = useContext(AuthContext);  // Получаем роль пользователя из контекста
-  const [activeTab, setActiveTab] = useState('tasks');  // Управляем вкладками
+  const { userRole, handleLogout } = useContext(AuthContext);
+  const [activeTab, setActiveTab] = useState('tasks');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (loading) return <p>Загрузка данных...</p>;
   if (error) return <p className="error">{error}</p>;
 
-  // Проверяем доступность таблиц на основе роли
+  // Проверка доступности вкладок на основе роли
   const showTasksJournal = userRole === 'user';
   const showChangesJournal = userRole === 'user' || userRole === 'user1';
   const showDocumentsJournal = userRole === 'user';
 
+  // Определяем заголовок для выбранной вкладки
+  const tabTitle = {
+    tasks: "Добродел",
+    changes: "Журнал изменений",
+    documents: "Журнал документации"
+  }[activeTab];
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
   return (
     <div className="dashboard-container">
-
       <div className="tabs">
-        {showTasksJournal && (
-          <button onClick={() => setActiveTab('tasks')} className={activeTab === 'tasks' ? 'active' : ''}>
-            Добродел
-          </button>
-        )}
-        {showChangesJournal && (
-          <button onClick={() => setActiveTab('changes')} className={activeTab === 'changes' ? 'active' : ''}>
-            Журнал изменений
-          </button>
-        )}
-        {showDocumentsJournal && (
-          <button onClick={() => setActiveTab('documents')} className={activeTab === 'documents' ? 'active' : ''}>
-            Журнал документации
-          </button>
-        )}
+        {/* Отображение заголовка активной вкладки */}
+        <h2 className="tab-title">{tabTitle}</h2>
+
+        {/* Иконка меню */}
+        <div className="menu-icon" onClick={toggleMenu}>
+          <AiOutlineMenu />
+        </div>
       </div>
+
+      {/* Выпадающее меню, если иконка активна */}
+      {isMenuOpen && (
+        <div className="dropdown-menu">
+          <button onClick={() => { setActiveTab('tasks'); toggleMenu(); }}>Добродел</button>
+          <button onClick={() => { setActiveTab('changes'); toggleMenu(); }}>Журнал изменений</button>
+          <button onClick={() => { setActiveTab('documents'); toggleMenu(); }}>Журнал документации</button>
+          <button onClick={handleLogout} className="logout-button">Выход</button>
+        </div>
+      )}
 
       <div className="tab-content">
         {activeTab === 'tasks' && showTasksJournal && (
@@ -47,7 +59,6 @@ function Dashboard() {
           <div>
             <h3>Журнал изменений</h3>
             <p>Здесь отображаются изменения...</p>
-            {/* Добавьте свою логику отображения данных */}
           </div>
         )}
 
@@ -55,7 +66,6 @@ function Dashboard() {
           <div>
             <h3>Журнал документации</h3>
             <p>Здесь отображаются документы...</p>
-            {/* Добавьте свою логику отображения данных */}
           </div>
         )}
       </div>

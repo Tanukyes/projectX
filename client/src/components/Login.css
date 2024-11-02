@@ -16,7 +16,7 @@
 }
 
 .login-container input {
-  width: 100%; /* Изменено на 100% для лучшего соответствия */
+  width: 95%; /* Изменено на 100% для лучшего соответствия */
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;

@@ -294,7 +294,7 @@ function Dobrodel() {
           onChange={handleInputChange}
         />
 
-        <label htmlFor="description">Проводимые работы (описание):</label>
+        <label htmlFor="description">Описание работ:</label>
         <textarea
           id="description"
           name="description"

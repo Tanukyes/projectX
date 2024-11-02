@@ -47,7 +47,7 @@ function Login() {
           type="text"
           id="emailOrUsername"
           name="emailOrUsername"
-          placeholder="Email или Имя пользователя"
+          placeholder="Email или имя пользователя"
           value={emailOrUsername}
           onChange={(e) => setEmailOrUsername(e.target.value)}
         />
