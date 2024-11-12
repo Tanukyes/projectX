@@ -65,8 +65,25 @@ function Dobrodel() {
   }, [username]);
 
   const sortOrdersByDate = (orders) => {
-    return orders.sort((a, b) => new Date(b.date_performed) - new Date(a.date_performed));
-  };
+  return orders.sort((a, b) => {
+    // Преобразуем дату и время в миллисекунды
+    const dateA = new Date(a.date_performed).getTime();
+    const dateB = new Date(b.date_performed).getTime();
+
+    // Если у записей одинаковая дата, сортируем по времени примечания
+    if (dateA === dateB) {
+      // Здесь предполагается, что примечание (`note`) содержит время, например "11:38", "12:47" и т.д.
+      const timeA = a.note ? new Date(`1970-01-01T${a.note}:00`).getTime() : 0;
+      const timeB = b.note ? new Date(`1970-01-01T${b.note}:00`).getTime() : 0;
+
+      return timeB - timeA; // сортировка по времени в порядке убывания
+    }
+
+    // Сортируем по дате в порядке убывания
+    return dateB - dateA;
+  });
+};
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

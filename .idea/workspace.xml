@@ -4,24 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fdb58737-18b1-4e1f-af63-e7b7beead0cf" name="Changes" comment="&#10;1">
-      <change afterPath="$PROJECT_DIR$/back/api/pattern_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/api/role_routes.py" afterDir="false" />
+    <list default="true" id="fdb58737-18b1-4e1f-af63-e7b7beead0cf" name="Changes" comment="исправный добродел">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/api/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/api/auth_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/auth_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/api/dashboard_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/dashboard_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/api/dobrodel_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/dobrodel_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/ExportPopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/ExportPopup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/contexts/authContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/contexts/authContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,7 +178,7 @@
       <workItem from="1729597282796" duration="3742000" />
       <workItem from="1729682234143" duration="68667000" />
       <workItem from="1730273418024" duration="81504000" />
-      <workItem from="1731308541136" duration="17895000" />
+      <workItem from="1731308541136" duration="19334000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <option name="closed" value="true" />
@@ -291,7 +276,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730530025667</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="исправный добродел">
+      <option name="closed" value="true" />
+      <created>1731404580521</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1731404580521</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,7 +304,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1" />
     <MESSAGE value="&#10;1" />
-    <option name="LAST_COMMIT_MESSAGE" value="&#10;1" />
+    <MESSAGE value="исправный добродел" />
+    <option name="LAST_COMMIT_MESSAGE" value="исправный добродел" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject2$app__1_.coverage" NAME="app (1) Coverage Results" MODIFIED="1730121907476" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
