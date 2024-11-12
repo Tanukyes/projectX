@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from back.models.user import User
 from back.models.role import Role
 from back.extensions import db
@@ -7,7 +7,14 @@ from back.extensions import db
 auth_blueprint = Blueprint('auth', __name__)
 
 @auth_blueprint.route('/register', methods=['POST'])
+@jwt_required()
 def register():
+    current_user = get_jwt_identity()
+
+    # Проверяем, что текущий пользователь администратор
+    if current_user['role'] != 'admin':
+        return jsonify({"msg": "Доступ запрещен"}), 403
+
     data = request.get_json()
     username, email, password = data.get('username'), data.get('email'), data.get('password')
     role_name = data.get('role', 'user')

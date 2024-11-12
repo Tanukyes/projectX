@@ -16,7 +16,8 @@ function Dashboard() {
 
   // Проверка доступности вкладок на основе роли
   const showTasksJournal = userRole === 'user';
-  const showChangesJournal = userRole === 'user' || userRole === 'user1';
+  const showChangesJournal = userRole === 'user' || userRole === 'smena' || userRole === 'powUser';
+  const showTimesJournal = userRole === 'user' || userRole === 'powUser';
   const showDocumentsJournal = userRole === 'user';
 
   // Определяем заголовок для выбранной вкладки
@@ -46,6 +47,7 @@ function Dashboard() {
           <button onClick={() => { setActiveTab('tasks'); toggleMenu(); }}>Добродел</button>
           <button onClick={() => { setActiveTab('changes'); toggleMenu(); }}>Журнал изменений</button>
           <button onClick={() => { setActiveTab('documents'); toggleMenu(); }}>Журнал документации</button>
+          <button onClick={() => { setActiveTab('times'); toggleMenu(); }}>Журнал отгулов</button>
           <button onClick={handleLogout} className="logout-button">Выход</button>
         </div>
       )}
@@ -66,6 +68,12 @@ function Dashboard() {
           <div>
             <h3>Журнал документации</h3>
             <p>Здесь отображаются документы...</p>
+          </div>
+        )}
+        {activeTab === 'times' && showTimesJournal && (
+          <div>
+            <h3>Журнал отгулов</h3>
+            <p>Здесь отображаются отгулы...</p>
           </div>
         )}
       </div>

@@ -10,7 +10,6 @@ def get_all_orders():
         print("Запрос к базе данных")
         orders = WorkOrder.query.all()
         orders_list = [order.to_dict() for order in orders]
-        print("Успешное получение данных:", orders_list)
         return jsonify(orders_list), 200
     except Exception as e:
         print("Ошибка при подключении к базе данных:", e)

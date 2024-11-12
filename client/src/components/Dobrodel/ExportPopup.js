@@ -11,27 +11,27 @@ function ExportPopup({ orders, onClose, onExport }) {
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
-    let updatedOrders = orders;
+  let updatedOrders = orders;
 
-    if (taskFilter) {
-      updatedOrders = updatedOrders.filter(order =>
-        order.field.toLowerCase().includes(taskFilter.toLowerCase())
-      );
-    }
-    if (performerFilter) {
-      updatedOrders = updatedOrders.filter(order =>
-        order.executor.toLowerCase().includes(performerFilter.toLowerCase())
-      );
-    }
-    if (startDate && endDate) {
-      updatedOrders = updatedOrders.filter(order => {
-        const orderDate = new Date(order.date_performed);
-        return orderDate >= new Date(startDate) && orderDate <= new Date(endDate);
-      });
-    }
+  if (taskFilter) {
+    updatedOrders = updatedOrders.filter(order =>
+      order.field && order.field.toLowerCase().includes(taskFilter.toLowerCase())
+    );
+  }
+  if (performerFilter) {
+    updatedOrders = updatedOrders.filter(order =>
+      order.executor && order.executor.toLowerCase().includes(performerFilter.toLowerCase())
+    );
+  }
+  if (startDate && endDate) {
+    updatedOrders = updatedOrders.filter(order => {
+      const orderDate = new Date(order.date_performed);
+      return orderDate >= new Date(startDate) && orderDate <= new Date(endDate);
+    });
+  }
 
-    setFilteredOrders(updatedOrders);
-  }, [orders, taskFilter, performerFilter, startDate, endDate]);
+  setFilteredOrders(updatedOrders);
+}, [orders, taskFilter, performerFilter, startDate, endDate]);
 
   const formatDate = dateString => {
     const date = new Date(dateString);

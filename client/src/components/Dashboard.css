@@ -72,6 +72,7 @@
 
 /* Контент для выбранной вкладки */
 .tab-content {
+  display: flex;
   flex-grow: 1;
   border-radius: 8px;
 }

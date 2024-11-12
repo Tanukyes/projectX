@@ -23,3 +23,14 @@ def dashboard():
         return jsonify(data), 200
     except Exception as e:
         return jsonify({"error": "Ошибка базы данных", "details": str(e)}), 500
+
+@dashboard_blueprint.route('/admin', methods=['GET'])
+@jwt_required()
+def get_admin_data():
+    try:
+        # Запрос к базе данных или логика для данных администратора
+        data = {"msg": "Данные для администратора"}  # Пример данных
+        return jsonify(data), 200
+    except Exception as e:
+        # Если возникает ошибка, верните понятный ответ
+        return jsonify({"error": "Ошибка базы данных", "details": str(e)}), 500

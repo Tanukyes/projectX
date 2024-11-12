@@ -5,13 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fdb58737-18b1-4e1f-af63-e7b7beead0cf" name="Changes" comment="&#10;1">
+      <change afterPath="$PROJECT_DIR$/back/api/pattern_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/api/role_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/api/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/api/auth_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/auth_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/api/dashboard_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/dashboard_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/api/dobrodel_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/dobrodel_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dashboard.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Login.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Login.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/ExportPopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/ExportPopup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/contexts/authContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/contexts/authContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,9 +31,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -66,6 +76,9 @@
     &quot;accountId&quot;: &quot;c1a769e2-7574-4b2e-a4ba-09f82786cfb2&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -93,6 +106,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="QodanaReportsService">
+    <option name="descriptions">
+      <ReportDescription localRun="true" path="C:\Users\Krab\AppData\Local\Temp\qodana_output\qodana.sarif.json" reportGuid="8462a4f4-8177-418b-85f9-8c6b6ea9cdb0" reportId="pythonProject2/qodana/2024-11-02" />
+    </option>
+  </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Krab\PycharmProjects\pythonProject2\client\src\components\Admin" />
@@ -174,7 +192,8 @@
       <workItem from="1728976896942" duration="28589000" />
       <workItem from="1729597282796" duration="3742000" />
       <workItem from="1729682234143" duration="68667000" />
-      <workItem from="1730273418024" duration="65745000" />
+      <workItem from="1730273418024" duration="81504000" />
+      <workItem from="1731308541136" duration="17895000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <option name="closed" value="true" />
@@ -264,7 +283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730470631430</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="&#10;1">
+      <option name="closed" value="true" />
+      <created>1730530025667</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1730530025667</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
