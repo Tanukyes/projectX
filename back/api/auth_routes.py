@@ -9,36 +9,50 @@ auth_blueprint = Blueprint('auth', __name__)
 @auth_blueprint.route('/register', methods=['POST'])
 @jwt_required()
 def register():
-    current_user = get_jwt_identity()
-
-    # Проверяем, что текущий пользователь администратор
-    if current_user['role'] != 'admin':
-        return jsonify({"msg": "Доступ запрещен"}), 403
-
-    data = request.get_json()
-    username, email, password = data.get('username'), data.get('email'), data.get('password')
-    role_name = data.get('role', 'user')
-
-    if not all([username, email, password]):
-        return jsonify({"msg": "Заполните все поля"}), 400
-
-    role = Role.query.filter_by(name=role_name).first()
-    if not role:
-        return jsonify({"msg": "Роль не существует"}), 400
-
-    if User.get_by_email(email):
-        return jsonify({"msg": "Email уже зарегистрирован"}), 400
-
     try:
+        current_user = get_jwt_identity()
+        print(f"Current user identity: {current_user}")  # Отладочное сообщение
+
+        # Проверка, что текущий пользователь — администратор
+        if current_user['role'] != 'admin':
+            print("Access denied: User is not an admin")  # Отладочное сообщение
+            return jsonify({"msg": "Доступ запрещен"}), 403
+
+        data = request.get_json()
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password')
+        role_name = data.get('role', 'user')
+
+        # Проверка наличия обязательных полей
+        if not all([username, email, password]):
+            print("Error: Missing required fields")  # Отладочное сообщение
+            return jsonify({"msg": "Заполните все поля"}), 400
+
+        # Проверка существования роли
+        role = Role.query.filter_by(name=role_name).first()
+        if not role:
+            print(f"Error: Role '{role_name}' does not exist")  # Отладочное сообщение
+            return jsonify({"msg": "Роль не существует"}), 400
+
+        # Проверка существования email в базе
+        if User.get_by_email(email):
+            print("Error: Email already registered")  # Отладочное сообщение
+            return jsonify({"msg": "Email уже зарегистрирован"}), 400
+
+        # Создание нового пользователя
         new_user = User(username=username, email=email, role=role)
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
+        print("User successfully created")  # Отладочное сообщение
+
+        return jsonify({"msg": "Пользователь успешно создан"}), 201
+
     except Exception as e:
         db.session.rollback()
+        print(f"Exception occurred: {e}")  # Отладочное сообщение
         return jsonify({"msg": "Ошибка при создании пользователя", "error": str(e)}), 500
-
-    return jsonify({"msg": "Пользователь успешно создан"}), 201
 
 @auth_blueprint.route('/login', methods=['POST'])
 def login():

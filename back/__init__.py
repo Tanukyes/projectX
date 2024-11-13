@@ -16,7 +16,7 @@ def create_app():
     app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
     app.register_blueprint(dashboard_blueprint, url_prefix='/api')
     app.register_blueprint(dobrodel_blueprint, url_prefix='/api')
-    app.register_blueprint(role_blueprint, url_prefix='/api/admin')
-    app.register_blueprint(pattern_blueprint,url_prefix='/api/admin')
+    app.register_blueprint(role_blueprint, url_prefix='/api')
+    app.register_blueprint(pattern_blueprint,url_prefix='/api')
 
     return app
