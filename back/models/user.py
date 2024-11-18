@@ -1,3 +1,4 @@
+# back/models/user.py
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..extensions import db
 
@@ -9,6 +10,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
     role = db.relationship('Role', backref='users')
+    room = db.Column(db.String(50), nullable=True)  # Новый столбец room
+    fio = db.Column(db.String(255), nullable=True)  # Новый столбец ФИО
 
     def set_password(self, password):
         if len(password) < 6:

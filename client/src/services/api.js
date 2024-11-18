@@ -8,6 +8,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
+// Добавляем токен ко всем запросам, если он существует
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -17,18 +18,20 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (response) => response.data, // Успешный ответ
+  (response) => response.data,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token'); // Удаляем токен, если он истек или неверен
+      localStorage.removeItem('token'); // Удаляем токен, если он недействителен
+      window.location.href = '/login'; // Перенаправляем на страницу входа
     }
-    return Promise.reject(error); // Пробрасываем ошибку дальше
+    return Promise.reject(error);
   }
 );
 
-export const apiGet = async (url) => {
+// Поддержка дополнительных конфигураций (например, заголовков) в запросах
+export const apiGet = async (url, config = {}) => {
   try {
-    const response = await api.get(url);
+    const response = await api.get(url, config);
     return response;
   } catch (error) {
     console.error(`GET request failed: ${error}`);
@@ -36,9 +39,9 @@ export const apiGet = async (url) => {
   }
 };
 
-export const apiPost = async (url, data) => {
+export const apiPost = async (url, data, config = {}) => {
   try {
-    const response = await api.post(url, data);
+    const response = await api.post(url, data, config);
     return response;
   } catch (error) {
     console.error(`POST request failed: ${error}`);
