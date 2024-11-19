@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useRef } from 'react';
 import { apiPost, apiGet } from '../../services/api';
 import './AdminPage.css';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaCaretDown } from 'react-icons/fa';
 
 function AdminPage() {
   const [username, setUsername] = useState('');
@@ -18,9 +17,15 @@ function AdminPage() {
   const [selectedPattern, setSelectedPattern] = useState('');
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState('');
-  const [showEditPopup, setShowEditPopup] = useState(false);
-  const [editUser, setEditUser] = useState({});
+  const [showEditPopup, setShowEditPopup] = useState(false); // Сохранено
+  const [editUser, setEditUser] = useState({}); // Сохранено
   const [showPassword, setShowPassword] = useState(false);
+  const [dropdownOpenRole, setDropdownOpenRole] = useState(false);
+  const [dropdownOpenPattern, setDropdownOpenPattern] = useState(false);
+  const [dropdownOpenUser, setDropdownOpenUser] = useState(false);
+  const dropdownRefRole = useRef(null);
+  const dropdownRefPattern = useRef(null);
+  const dropdownRefUser = useRef(null);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -30,6 +35,9 @@ function AdminPage() {
       } catch (error) {
         console.error('Ошибка при загрузке ролей:', error);
       }
+      localStorage.setItem('currentRoute', '/admin');
+
+  fetchRoles();
     };
 
     const fetchPatterns = async () => {
@@ -53,6 +61,33 @@ function AdminPage() {
     fetchRoles();
     fetchPatterns();
     fetchUsers();
+
+    // Добавляем слушатели для закрытия dropdown при клике вне
+    const handleOutsideClick = (event) => {
+      if (
+        dropdownRefRole.current &&
+        !dropdownRefRole.current.contains(event.target)
+      ) {
+        setDropdownOpenRole(false);
+      }
+      if (
+        dropdownRefPattern.current &&
+        !dropdownRefPattern.current.contains(event.target)
+      ) {
+        setDropdownOpenPattern(false);
+      }
+      if (
+        dropdownRefUser.current &&
+        !dropdownRefUser.current.contains(event.target)
+      ) {
+        setDropdownOpenUser(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
   }, []);
 
   const showFeedbackMessage = (message) => {
@@ -71,11 +106,24 @@ function AdminPage() {
       setRole('user');
       setRoom('');
       setFio('');
-      // Обновляем список пользователей
       const updatedUsers = await apiGet('/api/auth/users');
       setUsers(updatedUsers);
     } catch (error) {
       const errorMessage = error?.response?.data?.msg || 'Ошибка создания пользователя, попробуйте снова.';
+      showFeedbackMessage(errorMessage);
+      console.error(error);
+    }
+  };
+
+  const handleSaveEditUser = async () => {
+    try {
+      await apiPost(`/api/auth/edit_user/${editUser.id}`, editUser);
+      showFeedbackMessage('Данные пользователя успешно обновлены.');
+      setShowEditPopup(false);
+      const updatedUsers = await apiGet('/api/auth/users');
+      setUsers(updatedUsers);
+    } catch (error) {
+      const errorMessage = error?.response?.data?.msg || 'Ошибка обновления данных пользователя.';
       showFeedbackMessage(errorMessage);
       console.error(error);
     }
@@ -100,42 +148,19 @@ function AdminPage() {
     setShowEditPopup(true);
   };
 
-  const handleSaveEditUser = async () => {
-    try {
-      await apiPost(`/api/auth/edit_user/${editUser.id}`, editUser);
-      showFeedbackMessage('Данные пользователя успешно обновлены.');
-      setShowEditPopup(false);
-      // Обновляем список пользователей
-      const updatedUsers = await apiGet('/api/auth/users');
-      setUsers(updatedUsers);
-    } catch (error) {
-      const errorMessage = error?.response?.data?.msg || 'Ошибка обновления данных пользователя.';
-      showFeedbackMessage(errorMessage);
-      console.error(error);
-    }
+  const handleRoleSelect = (selectedRole) => {
+    setRole(selectedRole);
+    setDropdownOpenRole(false);
   };
 
-  const handleDeleteUser = async () => {
-    if (!selectedUser) {
-      showFeedbackMessage('Выберите пользователя для удаления.');
-      return;
-    }
+  const handlePatternSelect = (pattern) => {
+    setSelectedPattern(pattern);
+    setDropdownOpenPattern(false);
+  };
 
-    try {
-      await axios.delete(`http://localhost:5000/api/auth/delete_user/${selectedUser}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      showFeedbackMessage('Пользователь успешно удален.');
-      setUsers(users.filter((user) => user.id !== selectedUser));
-      setSelectedUser('');
-    } catch (error) {
-      const errorMessage = error?.response?.data?.msg || 'Ошибка удаления пользователя.';
-      showFeedbackMessage(errorMessage);
-      console.error(error);
-    }
+  const handleUserSelect = (userId) => {
+    setSelectedUser(userId);
+    setDropdownOpenUser(false);
   };
 
   const handleAddPattern = async () => {
@@ -174,10 +199,8 @@ function AdminPage() {
     }
   };
 
-  const toggleShowPassword = () => setShowPassword(!showPassword);
-
   return (
-    <div className="admin-page-container">
+    <div className="admin-page admin-page-container">
       {feedback && <div className="feedback-message">{feedback}</div>}
 
       <h2>Страница администратора</h2>
@@ -199,13 +222,18 @@ function AdminPage() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <input
-            type="password"
-            placeholder="Пароль"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="password-field">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Пароль"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="button" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
           <input
             type="text"
             placeholder="ФИО"
@@ -218,13 +246,27 @@ function AdminPage() {
             value={room}
             onChange={(e) => setRoom(e.target.value)}
           />
-          <select value={role} onChange={(e) => setRole(e.target.value)} required>
-            {roles.map((r) => (
-              <option key={r.id} value={r.name}>
-                {r.name}
-              </option>
-            ))}
-          </select>
+
+          <div className="dropdown-container" ref={dropdownRefRole}>
+            <div className="dropdown-header" onClick={() => setDropdownOpenRole(!dropdownOpenRole)}>
+              <span>{role || 'Выберите роль'}</span>
+              <FaCaretDown />
+            </div>
+            {dropdownOpenRole && (
+              <div className="dropdown-menu1">
+                {roles.map((r) => (
+                  <div
+                    key={r.id}
+                    className="dropdown-item"
+                    onClick={() => handleRoleSelect(r.name)}
+                  >
+                    {r.name}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <button type="submit">Создать пользователя</button>
         </form>
       </div>
@@ -234,63 +276,83 @@ function AdminPage() {
         <div className="pattern-management">
           <div className="pattern-input">
             <input
-                type="text"
-                placeholder="Новый шаблон"
-                value={newPattern}
-                onChange={(e) => setNewPattern(e.target.value)}
+              type="text"
+              placeholder="Новый шаблон"
+              value={newPattern}
+              onChange={(e) => setNewPattern(e.target.value)}
             />
             <button onClick={handleAddPattern}>Добавить шаблон</button>
           </div>
-          <div className="pattern-delete">
-            <select
-                id="delete-pattern"
-                value={selectedPattern}
-                onChange={(e) => setSelectedPattern(e.target.value)}
+          <div className="dropdown-container" ref={dropdownRefPattern}>
+            <div
+              className="dropdown-header"
+              onClick={() => setDropdownOpenPattern(!dropdownOpenPattern)}
             >
-              <option value="">Выберите шаблон для удаления</option>
-              {patterns.map((pattern, index) => (
-                  <option key={index} value={pattern}>
+              <span>{selectedPattern || 'Выберите шаблон для удаления'}</span>
+              <FaCaretDown />
+            </div>
+            {dropdownOpenPattern && (
+              <div className="dropdown-menu1">
+                {patterns.map((pattern, index) => (
+                  <div
+                    key={index}
+                    className="dropdown-item"
+                    onClick={() => handlePatternSelect(pattern)}
+                  >
                     {pattern}
-                  </option>
-              ))}
-            </select>
-            <button onClick={handleDeletePattern}>Удалить шаблон</button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
+          <button onClick={handleDeletePattern}>Удалить шаблон</button>
         </div>
       </div>
 
       <div className="user-interaction-section">
         <h3>Взаимодействие с пользователями</h3>
-        <select
-            value={selectedUser || ''}
-            onChange={(e) => setSelectedUser(parseInt(e.target.value))}
-        >
-          <option value="">Выберите пользователя</option>
-          {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.username}
-              </option>
-          ))}
-        </select>
+        <div className="dropdown-container" ref={dropdownRefUser}>
+          <div
+            className="dropdown-header"
+            onClick={() => setDropdownOpenUser(!dropdownOpenUser)}
+          >
+            <span>
+              {users.find((u) => u.id === selectedUser)?.username || 'Выберите пользователя'}
+            </span>
+            <FaCaretDown />
+          </div>
+          {dropdownOpenUser && (
+            <div className="dropdown-menu1">
+              {users.map((user) => (
+                <div
+                  key={user.id}
+                  className="dropdown-item"
+                  onClick={() => handleUserSelect(user.id)}
+                >
+                  {user.username}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
         <button onClick={handleEditUser}>Редактировать</button>
-        <button onClick={handleDeleteUser}>Удалить</button>
+        <button onClick={() => {}}>Удалить</button>
       </div>
 
-
       {showEditPopup && (
-          <div className="edit-popup">
-            <h3>Редактирование пользователя</h3>
-            <input
-                type="text"
-                placeholder="Имя пользователя"
-                value={editUser.username || ''}
-                onChange={(e) => setEditUser({...editUser, username: e.target.value})}
-            />
-            <input
-                type="email"
-                placeholder="Email"
-                value={editUser.email || ''}
-                onChange={(e) => setEditUser({...editUser, email: e.target.value })}
+        <div className="edit-popup">
+          <h3>Редактирование пользователя</h3>
+          <input
+            type="text"
+            placeholder="Имя пользователя"
+            value={editUser.username || ''}
+            onChange={(e) => setEditUser({ ...editUser, username: e.target.value })}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={editUser.email || ''}
+            onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
           />
           <input
             type="text"
@@ -304,22 +366,20 @@ function AdminPage() {
             value={editUser.room || ''}
             onChange={(e) => setEditUser({ ...editUser, room: e.target.value })}
           />
-            <div className="password-field">
-              <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="Новый пароль (оставьте пустым, если не менять)"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-              />
-              <button type="button" onClick={toggleShowPassword}>
-                {showPassword ? <FaEyeSlash/> : <FaEye/>}
-              </button>
-            </div>
-
-            <button onClick={handleSaveEditUser}>Сохранить</button>
-            <button onClick={() => setShowEditPopup(false)}>Отмена</button>
+          <div className="password-field">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Пароль"
+              value={editUser.password || ''}
+              onChange={(e) => setEditUser({ ...editUser, password: e.target.value })}
+            />
+            <button type="button" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
           </div>
+          <button onClick={handleSaveEditUser}>Сохранить</button>
+          <button onClick={() => setShowEditPopup(false)}>Отмена</button>
+        </div>
       )}
     </div>
   );

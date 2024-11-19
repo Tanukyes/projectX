@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect  } from 'react';
 import { useDataLoader } from '../services/dataLoader';
 import { AuthContext } from '../contexts/authContext';
 import './Dashboard.css';
@@ -8,8 +8,13 @@ import { AiOutlineMenu } from 'react-icons/ai';
 function Dashboard() {
   const { error, loading } = useDataLoader('/api/dashboard');
   const { userRole, handleLogout } = useContext(AuthContext);
-  const [activeTab, setActiveTab] = useState('tasks');
+  const [activeTab, setActiveTab] = useState(localStorage.getItem('dashboardTab') ||'tasks');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('currentRoute', window.location.pathname);
+    localStorage.setItem('dashboardTab', activeTab);
+  }, [activeTab]);
 
   if (loading) return <p>Загрузка данных...</p>;
   if (error) return <p className="error">{error}</p>;

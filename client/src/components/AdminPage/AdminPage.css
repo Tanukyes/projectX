@@ -62,13 +62,7 @@ h2 {
   gap: 15px;
 }
 
-.user-form label {
-  font-size: 14px;
-  color: #555;
-}
-
 .user-form input,
-.user-form select,
 .user-form button {
   padding: 10px;
   font-size: 16px;
@@ -76,8 +70,7 @@ h2 {
   border-radius: 4px;
 }
 
-.user-form input:focus,
-.user-form select:focus {
+.user-form input:focus {
   border-color: #007bff;
 }
 
@@ -106,16 +99,15 @@ h2 {
 
 .password-field button {
   position: absolute;
-  right: 10px;
-  top: 50%;
+  right: 8px; /* Перемещаем глазик ближе к правому краю */
+  top: 55%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 16px;
-  color: #555;
-  padding: 0;
-  margin: 0;
+  font-size: 20px; /* Уменьшаем область глазика */
+  color: #000000;
+  padding: 2px; /* Уменьшаем размер области клика */
 }
 
 .password-field button:hover {
@@ -127,8 +119,8 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  max-height: 300px; /* Фиксированная высота */
-  overflow-y: auto; /* Прокрутка, если контент превышает высоту */
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .pattern-input {
@@ -152,77 +144,19 @@ h2 {
 .pattern-input button {
   background-color: #007bff;
   color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .pattern-input button:hover {
   background-color: #0056b3;
 }
 
-.pattern-delete {
-  display: flex;
-  gap: 10px;
-}
-
-.pattern-delete select {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: #f9f9f9;
-  font-size: 16px;
-  max-height: 150px; /* Ограничиваем высоту */
-  overflow-y: auto; /* Добавляем прокрутку */
-  display: block; /* Обеспечиваем блоковый контекст */
-}
-
-.pattern-delete select:focus {
-  border-color: #007bff;
-}
-
-.pattern-delete button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.pattern-delete button:hover {
-  background-color: #a71d2a;
-}
-
 /* Взаимодействие с пользователями */
-.user-interaction-section {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-height: 300px; /* Фиксированная высота */
-  overflow-y: auto; /* Прокрутка, если контент превышает высоту */
-}
-
-.user-interaction-section select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  margin-bottom: 15px;
-  background-color: #f9f9f9;
-  font-size: 16px;
-}
-
-.user-interaction-section select:focus {
-  border-color: #007bff;
-}
-
 .user-interaction-section button {
   display: inline-block;
   padding: 10px 20px;
@@ -231,11 +165,6 @@ h2 {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-right: 10px;
-}
-
-.user-interaction-section button:hover {
-  opacity: 0.9;
 }
 
 .user-interaction-section button:nth-child(2) {
@@ -292,6 +221,7 @@ h2 {
   border-color: #007bff;
 }
 
+/* Кнопки в попапе */
 .edit-popup button {
   display: inline-block;
   padding: 10px 20px;
@@ -300,23 +230,39 @@ h2 {
   border-radius: 6px;
   cursor: pointer;
   margin-top: 10px;
-  width: 100%;
+  width: 48%; /* Делаем кнопки шире, чтобы они смотрелись симметрично */
+  transition: background-color 0.3s ease;
 }
 
+/* Кнопка "Сохранить" зеленая */
 .edit-popup button.save-button {
-  background-color: #4caf50;
+  background-color: #28a745;
   color: white;
 }
 
 .edit-popup button.save-button:hover {
-  background-color: #388e3c;
+  background-color: #218838;
 }
 
+/* Кнопка "Отмена" синяя */
 .edit-popup button.cancel-button {
-  background-color: #dc3545;
+  background-color: #007bff;
   color: white;
 }
 
 .edit-popup button.cancel-button:hover {
-  background-color: #a71d2a;
+  background-color: #0056b3;
+}
+.dropdown-menu1 {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: #ececec;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 10;
+  max-height: 100px;
+  width: 25%;
+  overflow-y: auto;
 }

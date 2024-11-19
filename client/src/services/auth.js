@@ -41,6 +41,18 @@ export const getUsernameFromToken = () => {
   }
 };
 
+export const getFioFromToken = () => {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+  try {
+    const decoded = jwtDecode(token);
+    return decoded.fio || null; // Предполагаем, что FIO хранится в токене
+  } catch (error) {
+    console.error("Ошибка декодирования токена:", error);
+    return null;
+  }
+};
+
 // Функция для выхода пользователя из системы
 export const logout = () => {
   localStorage.removeItem('token');

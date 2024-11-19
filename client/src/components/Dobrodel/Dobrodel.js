@@ -352,8 +352,8 @@ function Dobrodel() {
           type="text"
           id="performer"
           name="performer"
-          defaultValue={formData.performer || ''}
-          readOnly
+          value={formData.performer || ''}
+          onChange={handleInputChange}
         />
 
         <label htmlFor="note">Примечание:</label>

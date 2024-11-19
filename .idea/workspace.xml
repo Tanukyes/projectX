@@ -4,17 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fdb58737-18b1-4e1f-af63-e7b7beead0cf" name="Changes" comment="исправная панель администратора">
+    <list default="true" id="fdb58737-18b1-4e1f-af63-e7b7beead0cf" name="Changes" comment="исправная панель администратора 18.11">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/api/auth_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/auth_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/extensions.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/extensions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/models/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/patterns.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/patterns.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/PrivateRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/PrivateRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/contexts/authContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/contexts/authContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/services/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +24,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Python Script" />
         <option value="JavaScript File" />
         <option value="CSS File" />
-        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -188,7 +188,7 @@
       <workItem from="1729682234143" duration="68667000" />
       <workItem from="1730273418024" duration="81504000" />
       <workItem from="1731308541136" duration="35589000" />
-      <workItem from="1731500692582" duration="23901000" />
+      <workItem from="1731500692582" duration="38767000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <option name="closed" value="true" />
@@ -310,7 +310,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731495954176</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="исправная панель администратора 18.11">
+      <option name="closed" value="true" />
+      <created>1731930051081</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1731930051081</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,7 +341,8 @@
     <MESSAGE value="исправный добродел" />
     <MESSAGE value="исправная сортировка таблицы" />
     <MESSAGE value="исправная панель администратора" />
-    <option name="LAST_COMMIT_MESSAGE" value="исправная панель администратора" />
+    <MESSAGE value="исправная панель администратора 18.11" />
+    <option name="LAST_COMMIT_MESSAGE" value="исправная панель администратора 18.11" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject2$app__1_.coverage" NAME="app (1) Coverage Results" MODIFIED="1730121907476" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

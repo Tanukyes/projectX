@@ -1,15 +1,23 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../contexts/authContext';
 
 const PrivateRoute = ({ children, allowedRole }) => {
   const { isAuth, userRole } = useContext(AuthContext);
+  const location = useLocation();
 
-  if (!isAuth){
+  useEffect(() => {
+    if (isAuth) {
+      localStorage.setItem('currentRoute', location.pathname); // Сохраняем текущий маршрут
+    }
+  }, [isAuth, location.pathname]);
+
+  if (!isAuth) {
     return <Navigate to="/login" />;
   }
+
   if (allowedRole && userRole !== allowedRole) {
-    return <Navigate to="/dashboard"/>;
+    return <Navigate to={localStorage.getItem('currentRoute') || '/dashboard'} />;
   }
 
   return children;
