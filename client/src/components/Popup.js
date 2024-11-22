@@ -1,4 +1,3 @@
-// Popup.js
 import React from 'react';
 import './Popup.css';
 import { IoMdClose } from 'react-icons/io';
