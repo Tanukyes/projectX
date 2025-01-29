@@ -1,6 +1,6 @@
 /* Основной контейнер Dobrodel */
 .dobrodel-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Arial, sans-serif;;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -55,6 +55,7 @@
   transition: border-color 0.3s ease;
   box-sizing: border-box;
   margin-bottom: 10px;
+  font-family: Arial, sans-serif;
 }
 
 .dobrodel-form input:focus,
@@ -85,7 +86,7 @@
 
 .pattern-dropdown {
   position: absolute;
-  top: 57%;
+  top: 90%;
   left: 0;
   background-color: #ffffff;
   border: 1px solid #ddd;
@@ -97,6 +98,7 @@
   z-index: 100;
   margin-top: 5px;
 }
+
 
 .pattern-option {
   padding: 8px;
@@ -163,7 +165,7 @@
 
 .search-container label {
   font-size: 14px;
-  color: #555;
+  font-family: Arial, sans-serif;
 }
 
 .search-select,
@@ -193,7 +195,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto; /* Прокрутка по вертикали */
-  height: 76vh; /* Задать фиксированную высоту */
+  height: 92%; /* Задать фиксированную высоту */
   padding: 10px;
   box-sizing: border-box;
 }

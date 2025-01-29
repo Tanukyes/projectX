@@ -1,8 +1,9 @@
-from flask import Flask, jsonify
+from flask import jsonify
 from flask_cors import CORS
 from back import create_app
 
 app = create_app()  # Создаем экземпляр Flask приложения
+
 
 # Добавляем CORS поддержку
 CORS(app, resources={r"/api/*": {

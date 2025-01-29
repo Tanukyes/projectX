@@ -1,0 +1,271 @@
+.logs-table-container {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.time-filter-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.filter-container input[type="date"] {
+    margin: 0 5px;
+}
+
+.my-table-container {
+    overflow-y: auto;
+    max-height: 400px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+}
+
+.my-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.my-table-container th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.my-table-container th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+tbody tr td:nth-child(7),
+tbody tr td:nth-child(8){
+    font-weight: bold;
+}
+
+.search-container label {
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.search-container select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.search-container input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.my-refresh-button {
+   color: #007bff;
+    background-color: #ffffff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.my-refresh-button:hover {
+    color: #0056b3;
+}
+
+.my-reset-button {
+    color: #dc3545;
+    background-color: #ffffff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.my-reset-button:hover {
+    color: #c82333;
+}
+
+.my-export-excel-button{
+    color: #28a745;
+    background-color: #ffffff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.my-export-excel-button:hover {
+  color: #1e7e34;
+}
+
+.overlay-buttons {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-buttons button {
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+.overlay-buttons button:hover {
+    background-color: #0056b3;
+}
+.overlay-buttons button:nth-child(2) {
+    background-color: #dc3545;
+}
+.overlay-buttons button:nth-child(2):hover {
+    background-color: #a71d2a;
+}
+
+/* Таблица */
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-container th,
+.table-container td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Попап */
+.my-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.my-popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+}
+.popup-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.popup-buttons button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+.popup-buttons button:hover {
+    background-color: #0056b3;
+}
+.popup-buttons button:nth-child(2) {
+    background-color: #dc3545;
+}
+.popup-buttons button:nth-child(2):hover {
+    background-color: #a71d2a;
+}
+
+.actions-column {
+    position: relative;
+    min-width: 80px;
+}
+
+.logs-table-container tr.selected-row{
+    background-color: #e0f7fa !important;
+    font-weight: bold;
+}
+
+.my-popup-content input,
+.my-popup-content textarea{
+    width: 96%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.my-popup-content select{
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.my-popup-content label{
+    font-size: 16px;
+    margin-top: 10px;
+    display: block;
+    color: black;
+    font-family: Arial, sans-serif;
+}

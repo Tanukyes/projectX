@@ -1,40 +1,22 @@
 /* Основной контейнер страницы администратора */
 .admin-page-container {
   width: 90%;
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  font-family: 'Roboto', Arial, sans-serif;
 }
 
 /* Заголовок страницы */
 h2 {
   text-align: center;
-  color: #333;
+  font-size: 24px;
   margin-bottom: 20px;
-}
-
-/* Стили для всплывающего сообщения о статусе */
-.feedback-message {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #4caf50;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  opacity: 1;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  z-index: 1000;
-}
-
-.feedback-message.hidden {
-  opacity: 0;
-  transform: translate(-50%, -20px);
+  text-transform: uppercase;
+  font-family: Arial, sans-serif;
 }
 
 /* Разделы страницы администратора */
@@ -42,50 +24,59 @@ h2 {
 .template-management-section,
 .user-interaction-section {
   margin-top: 20px;
-  padding: 20px;
-  background-color: #ffffff;
+  padding: 25px;
+  background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Заголовки разделов */
 .admin-section h3,
 .template-management-section h3,
 .user-interaction-section h3 {
+  font-size: 22px;
   margin-bottom: 15px;
-  color: #555;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  font-family: Arial, sans-serif;
 }
 
-/* Формы для пользователей */
+/* Формы */
 .user-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+  font-family: Arial, sans-serif;
 }
 
 .user-form input,
 .user-form button {
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
 .user-form input:focus {
   border-color: #007bff;
+  outline: none;
 }
 
 .user-form button {
   background-color: #007bff;
   color: white;
   cursor: pointer;
+  font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
-.user-form button:hover {
+.user-form .submit-button:hover {
   background-color: #0056b3;
 }
 
-/* Поле пароля с глазиком */
+/* Поле для пароля */
 .password-field {
   position: relative;
   display: flex;
@@ -94,24 +85,67 @@ h2 {
 
 .password-field input {
   flex-grow: 1;
-  padding-right: 35px;
+  padding-right: 50px;
 }
 
-.password-field button {
+.password-field .password-eye {
   position: absolute;
-  right: 8px; /* Перемещаем глазик ближе к правому краю */
+  right: 9px;
   top: 55%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 20px; /* Уменьшаем область глазика */
-  color: #000000;
-  padding: 2px; /* Уменьшаем размер области клика */
+  font-size: 18px;
+  color: #666;
 }
 
-.password-field button:hover {
-  color: #333;
+/* Стили для выпадающих меню */
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease;
+  font-family: Arial, sans-serif;
+}
+
+.dropdown-header:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-menu1 {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  z-index: 100;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #007bff;
+  color: white;
 }
 
 /* Управление шаблонами */
@@ -119,50 +153,129 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  max-height: 300px;
-  overflow-y: auto;
 }
 
 .pattern-input {
   display: flex;
   gap: 10px;
+  font-family: Arial, sans-serif;
 }
 
 .pattern-input input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  padding: 12px;
   font-size: 16px;
-  background-color: #f9f9f9;
-}
-
-.pattern-input input:focus {
-  border-color: #007bff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  flex: 1;
 }
 
 .pattern-input button {
-  background-color: #007bff;
+  background-color: #28a745;
   color: white;
   cursor: pointer;
+  font-weight: bold;
+  border-radius: 6px;
+  border: 1px solid #ccc;
   transition: background-color 0.3s ease;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  font-family: Arial, sans-serif;
 }
 
 .pattern-input button:hover {
-  background-color: #0056b3;
+  background-color: #218838;
 }
 
-/* Взаимодействие с пользователями */
-.user-interaction-section button {
-  display: inline-block;
-  padding: 10px 20px;
+.DDdelete{
+  background-color: #dc3545;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: background-color 0.3s ease;
+  font-family: Arial, sans-serif;
+  padding: 12px;
+  font-size: 16px;
+}
+
+/* Окно редактирования пользователя */
+.edit-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  width: 90%;
+  max-width: 500px;
+  font-family: Arial, sans-serif;
+}
+
+.edit-popup h3 {
+  font-size: 22px;
+  color: #007bff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.edit-popup input {
+  width: 95%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: Arial, sans-serif;
+}
+
+.edit-popup input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Кнопки в попапе */
+.edit-popup button {
+  width: 46%;
+  padding: 12px;
   font-size: 16px;
   border: none;
   border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 5px 10px;
+}
+
+.edit-popup .save-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.edit-popup .save-button:hover {
+  background-color: #218838;
+}
+
+.edit-popup .cancel-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.edit-popup .cancel-button:hover {
+  background-color: #a71d2a;
+}
+
+.user-interaction-section-managment{
+    display: flex;
+    flex-direction: column;
+}
+
+/* Стили для взаимодействия с пользователями */
+.user-interaction-section button {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -170,6 +283,7 @@ h2 {
 .user-interaction-section button:nth-child(2) {
   background-color: #007bff;
   color: white;
+  margin-top: 10px ;
 }
 
 .user-interaction-section button:nth-child(2):hover {
@@ -185,84 +299,22 @@ h2 {
   background-color: #a71d2a;
 }
 
-/* Окно редактирования */
-.edit-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  width: 90%;
-  max-width: 400px;
-}
-
-.edit-popup h3 {
-  margin-top: 0;
-  font-size: 20px;
-  color: #333;
-  text-align: center;
-}
-
-.edit-popup input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: #f9f9f9;
-  font-size: 16px;
-}
-
-.edit-popup input:focus {
-  border-color: #007bff;
-}
-
-/* Кнопки в попапе */
-.edit-popup button {
-  display: inline-block;
+.admin-logout-button{
+  position: absolute;
+  top: 40px;
+  right: 72px;
+  background-color: #dc3545;
+  color: white;
   padding: 10px 20px;
   font-size: 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  margin-top: 10px;
-  width: 48%; /* Делаем кнопки шире, чтобы они смотрелись симметрично */
-  transition: background-color 0.3s ease;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Кнопка "Сохранить" зеленая */
-.edit-popup button.save-button {
-  background-color: #28a745;
-  color: white;
-}
-
-.edit-popup button.save-button:hover {
-  background-color: #218838;
-}
-
-/* Кнопка "Отмена" синяя */
-.edit-popup button.cancel-button {
-  background-color: #007bff;
-  color: white;
-}
-
-.edit-popup button.cancel-button:hover {
-  background-color: #0056b3;
-}
-.dropdown-menu1 {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  background-color: #ececec;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  padding: 10px;
-  z-index: 10;
-  max-height: 100px;
-  width: 25%;
-  overflow-y: auto;
+.admin-logout-button:hover{
+  background-color: #a71d2a;
+  transform: scale(1.05);
 }

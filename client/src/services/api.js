@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:5000';
 
 const api = axios.create({
   baseURL: API_URL,
-  headers: { 'Content-Type': 'application/json' },
+  headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
   withCredentials: true,
 });
 
@@ -45,6 +45,16 @@ export const apiPost = async (url, data, config = {}) => {
     return response;
   } catch (error) {
     console.error(`POST request failed: ${error}`);
+    throw error;
+  }
+};
+
+export const apiDelete = async (url, config = {}) => {
+  try {
+    const response = await api.delete(url, config);
+    return response;
+  }catch (error){
+    console.error(`DELETE request failed: ${error}`)
     throw error;
   }
 };

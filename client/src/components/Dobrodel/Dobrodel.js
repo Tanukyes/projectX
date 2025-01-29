@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './Dobrodel.css';
 import Popup from '../Popup';
 import ExportPopup from './ExportPopup';
-import { AuthContext } from '../../contexts/authContext';
 import { FaSync, FaFileExcel, FaRegSave, FaFilter } from 'react-icons/fa'; // импорт иконки фильтра
 import { BsDatabaseFillAdd } from 'react-icons/bs';
 import { TbDatabaseEdit } from 'react-icons/tb';
@@ -10,16 +9,16 @@ import { ImCancelCircle } from 'react-icons/im';
 import { MdDelete } from 'react-icons/md';
 import * as XLSX from 'xlsx';
 import patterns from './patterns.json';
+import {jwtDecode} from "jwt-decode";
 
 function Dobrodel() {
-  const { username } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split("T")[0],
     orderNumber: '',
     description: '',
     task: '',
-    performer: username || '',
+    performer: '',
     note: ''
   });
 
@@ -35,6 +34,27 @@ function Dobrodel() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchColumn, setSearchColumn] = useState('order_number');
   const [showPatternDropdown, setShowPatternDropdown] = useState(false); // для показа/скрытия выпадающего списка паттернов
+  const [filteredPatterns, setFilteredPatterns] = useState(patterns.patterns)
+
+  const getFioFromToken = (token) => {
+    try {
+      const decodedToken = jwtDecode(token);
+      return decodedToken.fio || '';
+    }catch (error){
+      console.error('Ошибка декодирования токена',error);
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token){
+      const FioFromToken = getFioFromToken(token);
+      setFormData((prevData) => ({
+        ...prevData,
+        performer: prevData.performer || FioFromToken
+      }));
+    }
+  }, [formData.performer]);
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
@@ -57,12 +77,6 @@ function Dobrodel() {
     fetchOrders();
   }, [fetchOrders]);
 
-  useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      performer: username || '',
-    }));
-  }, [username]);
 
   const sortOrdersByDate = (orders) => {
   return orders.sort((a, b) => {
@@ -104,13 +118,12 @@ function Dobrodel() {
       ...prevData,
       [name]: value || ''
     }));
-  };
 
-  const handleTaskChange = (e) => {
-    setFormData({
-      ...formData,
-      task: e.target.value
-    });
+    if (name === "task") {
+      const filtered = patterns.patterns.filter(pattern =>
+          pattern.toLowerCase().startsWith(value.toLowerCase()));
+      setFilteredPatterns(filtered);
+    }
   };
 
   const handlePatternSelect = (pattern) => {
@@ -120,6 +133,8 @@ function Dobrodel() {
     });
     setShowPatternDropdown(false); // Закрываем dropdown после выбора
   };
+
+
 
   const getCurrentDate = () => new Date().toISOString().split("T")[0];
   const getCurrentTime = () => new Date().toTimeString().slice(0, 5);
@@ -145,7 +160,7 @@ function Dobrodel() {
       }
       const newOrder = await response.json();
       setOrders(sortOrdersByDate([newOrder, ...orders]));
-      setFormData({ date: today, orderNumber: '', description: '', task: '', performer: username, note: '' });
+      setFormData({ date: today, orderNumber: '', description: '', task: '', performer: '', note: '' });
     } catch (err) {
       setError(err.message || 'Ошибка добавления записи');
     }
@@ -211,7 +226,7 @@ function Dobrodel() {
       const updatedOrder = await response.json();
       setOrders(orders.map(order => (order.id === selectedOrderId ? updatedOrder : order)));
       setEditing(false);
-      setFormData({ date: getCurrentDate(), orderNumber: '', description: '', task: '', performer: username, note: '' });
+      setFormData({ date: getCurrentDate(), orderNumber: '', description: '', task: '', performer: '', note: '' });
       setSelectedOrderId(null);
       setSelectedRow(null);
     } catch (err) {
@@ -261,7 +276,7 @@ function Dobrodel() {
       orderNumber: '',
       description: '',
       task: '',
-      performer: username,
+      performer: '',
       note: ''
     });
     setSelectedOrderId(null);
@@ -294,110 +309,132 @@ function Dobrodel() {
       <div className="dobrodel-form">
         <label htmlFor="date">Дата:</label>
         <input
-          type="date"
-          id="date"
-          name="date"
-          value={formData.date}
-          onChange={handleInputChange}
-          max={new Date().toISOString().split("T")[0]}
+            type="date"
+            id="date"
+            name="date"
+            value={formData.date}
+            onChange={handleInputChange}
+            max={new Date().toISOString().split("T")[0]}
         />
 
         <label htmlFor="orderNumber">Номер ИЗМ/НАР:</label>
         <input
-          type="text"
-          id="orderNumber"
-          name="orderNumber"
-          value={formData.orderNumber || ''}
-          onChange={handleInputChange}
+            type="text"
+            id="orderNumber"
+            name="orderNumber"
+            value={formData.orderNumber || ''}
+            onChange={handleInputChange}
         />
 
         <label htmlFor="description">Описание работ:</label>
         <textarea
-          id="description"
-          name="description"
-          value={formData.description || ''}
-          onChange={handleInputChange}
+            id="description"
+            name="description"
+            value={formData.description || ''}
+            onChange={(e) => {
+              if (e.target.value.length > 100) {
+              e.target.value = e.target.value.slice(0, 100);
+              }
+              handleInputChange(e);
+              }}
+            style ={{resize: "none", width: "220px", height: "100px"}}
         ></textarea>
+
 
         <label htmlFor="task">Задание:</label>
         <div className="task-filter-container">
           <input
-            type="text"
-            name="task"
-            placeholder="Введите задание или выберите из списка"
-            value={formData.task}
-            onChange={handleTaskChange}
+              type="text"
+              name="task"
+              placeholder="Введите задание или выберите из списка"
+              value={formData.task}
+              onChange={handleInputChange}
           />
-          <button className="filter-button" onClick={() => setShowPatternDropdown(!showPatternDropdown)}>
-            <FaFilter />
+          <button
+              className={"filter-button"}
+              onClick={() => setShowPatternDropdown(!showPatternDropdown)}
+          >
+            <FaFilter/>
           </button>
-        </div>
-
-        {showPatternDropdown && (
-          <div className="pattern-dropdown">
-            {patterns.patterns.map((pattern, index) => (
-              <div
-                key={index}
-                className="pattern-option"
-                onClick={() => handlePatternSelect(pattern)}
-              >
-                {pattern}
+          {showPatternDropdown && (
+              <div className="pattern-dropdown">
+                {filteredPatterns.map((pattern, index) => (
+                    <div
+                        key={index}
+                        className="pattern-option"
+                        style={{
+                          padding: '8px',
+                          cursor: 'pointer',
+                          background: '#f9f9f9',
+                          borderBottom: '1px solid #ddd'
+                        }}
+                        onClick={() => handlePatternSelect(pattern)}
+                    >
+                      {pattern}
+                    </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
+          )}
+        </div>
 
         <label htmlFor="performer">Исполнитель работ:</label>
         <input
-          type="text"
-          id="performer"
-          name="performer"
-          value={formData.performer || ''}
-          onChange={handleInputChange}
+            type="text"
+            id="performer"
+            name="performer"
+            value={formData.performer || ''}
+            onChange={handleInputChange}
         />
 
         <label htmlFor="note">Примечание:</label>
         <textarea
-          id="note"
-          name="note"
-          value={formData.note || ''}
-          onChange={handleInputChange}
+            id="note"
+            name="note"
+            value={formData.note || ''}
+            onChange={(e) => {
+              if (e.target.value.length > 100) {
+              e.target.value = e.target.value.slice(0, 100);
+              }
+              handleInputChange(e);
+              }}
+            style ={{resize: "none", width: "220px", height: "100px"}}
         ></textarea>
+
 
         <div className="form-buttons">
           {editing ? (
-            <>
-              <button onClick={handleSaveEdit} title="Сохранить" className="save-button">
-                <FaRegSave />
-              </button>
-              <button onClick={handleCancelEdit} title="Отмена" className="cancel-button">
-                <ImCancelCircle />
-              </button>
-            </>
+              <>
+                <button onClick={handleSaveEdit} title="Сохранить" className="save-button">
+                  <FaRegSave/>
+                </button>
+                <button onClick={handleCancelEdit} title="Отмена" className="cancel-button">
+                  <ImCancelCircle/>
+                </button>
+              </>
           ) : (
-            <>
-              <button onClick={handleAddOrder} title="Добавить" className="add-button">
-                <BsDatabaseFillAdd />
-              </button>
-              <button onClick={handleEditOrder} title="Редактировать" className="edit-button">
-                <TbDatabaseEdit />
-              </button>
-              <button onClick={confirmDeleteOrder} title="Удалить" className="delete-button">
-                <MdDelete />
-              </button>
-            </>
+              <>
+                <button onClick={handleAddOrder} title="Добавить" className="add-button">
+                  <BsDatabaseFillAdd/>
+                </button>
+                <button onClick={handleEditOrder} title="Редактировать" className="edit-button">
+                  <TbDatabaseEdit/>
+                </button>
+                <button onClick={confirmDeleteOrder} title="Удалить" className="delete-button">
+                  <MdDelete/>
+                </button>
+              </>
           )}
         </div>
       </div>
 
-      <div style={{ flexGrow: 1 }}>
+      <div style={{flexGrow: 1}}>
         <div className="search-container">
           <label htmlFor="searchColumn">Поиск:</label>
           <select
-            id="searchColumn"
-            value={searchColumn}
-            onChange={handleSearchColumnChange}
-            className="search-select"
+              id="searchColumn"
+              value={searchColumn}
+              onChange={handleSearchColumnChange}
+              className="search-select"
           >
             <option value="order_number">Номер наряда</option>
             <option value="description">Описание</option>
@@ -406,17 +443,17 @@ function Dobrodel() {
             <option value="executor">Исполнитель</option>
           </select>
           <input
-            type="text"
-            placeholder="Введите текст для поиска..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="search-input"
+              type="text"
+              placeholder="Введите текст для поиска..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="search-input"
           />
           <button className="refresh-button" onClick={fetchOrders} title="Обновить">
-            <FaSync />
+            <FaSync/>
           </button>
           <button className="excel-button" onClick={handleOpenExportDialog} title="Экспорт в Excel">
-            <FaFileExcel />
+          <FaFileExcel />
           </button>
         </div>
 

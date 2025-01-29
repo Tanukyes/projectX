@@ -24,6 +24,7 @@
   font-weight: bold;
   color: #000000;
   margin: 0;
+  font-family: Arial, sans-serif;
 }
 
 /* Иконка меню */
@@ -75,13 +76,14 @@
   display: flex;
   flex-grow: 1;
   border-radius: 8px;
+  background-color: #dadada;
 }
 
 /* Стили текста внутри tab-content */
 .tab-content h3 {
   margin-top: 0;
   font-size: 24px;
-  color: #333;
+  font-family: Arial, sans-serif;
 }
 
 .tab-content p {

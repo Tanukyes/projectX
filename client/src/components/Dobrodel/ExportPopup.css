@@ -40,16 +40,20 @@
 .filter-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 10px;
   margin-bottom: 15px;
+  font-family: Arial, sans-serif;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .filter-input {
   flex: 1;
-  padding: 10px;
+  padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
 }
 
 .date-picker-container {
@@ -64,12 +68,14 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
 }
 
 .export-popup-table {
   overflow-x: auto;
   max-height: 60vh;
   margin-top: 15px;
+  font-family: Arial, sans-serif;
 }
 
 .export-popup-table table {
@@ -111,6 +117,7 @@
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: Arial, sans-serif;
 }
 
 .export-excel-button:hover {
