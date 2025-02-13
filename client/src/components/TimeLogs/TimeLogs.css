@@ -176,7 +176,7 @@ tbody tr:hover {
     z-index: 999;
 }
 
-.statistics-popup, .user-details-popup {
+.user-details-popup {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -499,14 +499,16 @@ tbody tr:hover {
     cursor: pointer;
     font-family: Arial, sans-serif;
 }
-.room-container:hover {
+.room-name:hover {
     background-color: #e6f7ff;
 }
+
 .room-name {
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
 }
+
 .room-details {
     margin-top: 10px;
 }

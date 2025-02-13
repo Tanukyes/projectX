@@ -1,0 +1,80 @@
+.export-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.export-popup-content {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+}
+
+.export-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.export-popup-close {
+  font-size: 28px;
+  color: #dc3545;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.export-popup-body {
+  margin-top: 15px;
+}
+
+.export-popup-body p {
+  margin-bottom: 10px;
+}
+
+.export-popup-body select,
+.export-popup-body input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.export-popup-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.export-excel-button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.export-excel-button:hover {
+  background-color: #1e7e34;
+}
+
+.export-popup-body p{
+  color: black;
+}

@@ -4,23 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fdb58737-18b1-4e1f-af63-e7b7beead0cf" name="Changes" comment="продуктив добродела">
-      <change afterPath="$PROJECT_DIR$/back/api/time_logs_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back/models/time_logs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/TimeLogs/LogsTable.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/TimeLogs/LogsTable.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/TimeLogs/TimeLogs.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/TimeLogs/TimeLogs.js" afterDir="false" />
+    <list default="true" id="fdb58737-18b1-4e1f-af63-e7b7beead0cf" name="Changes" comment="/">
+      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile_front" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/api/change_log_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/api/documentation_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/models/changes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/models/documentation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Changes/Changes.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Changes/Changes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Changes/ExcelPopup.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Changes/ExcelPopup.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Documentation/DocExportPopup.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Documentation/DocExportPopup.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Documentation/Documentation.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Documentation/Documentation.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/back/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/api/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/api/auth_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/auth_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/api/dashboard_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/dashboard_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/api/pattern_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/pattern_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/api/role_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/role_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/api/time_logs_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/api/time_logs_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/extensions.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/extensions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/models/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/models/role.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/models/role.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/models/time_logs.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/models/time_logs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/models/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back/models/work_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/models/work_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AdminPage/AdminPage.js" afterDir="false" />
@@ -29,16 +47,23 @@
       <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/Dobrodel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/ExportPopup.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/ExportPopup.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Login.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Dobrodel/ExportPopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dobrodel/ExportPopup.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Popup.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Popup.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Popup.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/PrivateRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/PrivateRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/TimeLogs/LogsTable.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/TimeLogs/LogsTable.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/TimeLogs/LogsTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/TimeLogs/LogsTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/TimeLogs/TimeLogs.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/TimeLogs/TimeLogs.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/TimeLogs/TimeLogs.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/TimeLogs/TimeLogs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/contexts/authContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/contexts/authContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/services/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/auth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/services/dataLoader.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/dataLoader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/back/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +76,7 @@
         <option value="Python Script" />
         <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
@@ -105,31 +131,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.app (1).executor&quot;: &quot;Debug&quot;,
-    &quot;Python.app.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Krab/PycharmProjects/Gui_dobrodel&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\PyCharm 2024.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.app (1).executor": "Debug",
+    "Python.app.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/Krab/PycharmProjects/Gui_dobrodel",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\PyCharm 2024.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Krab\PycharmProjects\pythonProject2\back" />
       <recent name="C:\Users\Krab\PycharmProjects\pythonProject2\client\src\components\AdminPage" />
       <recent name="C:\Users\Krab\PycharmProjects\pythonProject2\client\src\components\Admin" />
       <recent name="C:\Users\Krab\PycharmProjects\pythonProject2\client\src\components\Dashboard" />
       <recent name="C:\Users\Krab\PycharmProjects\pythonProject2\client\src\contexts" />
-      <recent name="C:\Users\Krab\PycharmProjects\pythonProject2" />
     </key>
   </component>
   <component name="RunManager" selected="Python.app (1)">
@@ -224,7 +250,15 @@
       <workItem from="1737371865027" duration="2099000" />
       <workItem from="1738047049841" duration="1148000" />
       <workItem from="1738138649997" duration="549000" />
-      <workItem from="1738151265671" duration="1473000" />
+      <workItem from="1738151265671" duration="9002000" />
+      <workItem from="1738217315883" duration="3513000" />
+      <workItem from="1738580592474" duration="113000" />
+      <workItem from="1738580742756" duration="36000" />
+      <workItem from="1738581106894" duration="32012000" />
+      <workItem from="1738742637529" duration="17931000" />
+      <workItem from="1739262644576" duration="39000" />
+      <workItem from="1739265599692" duration="6571000" />
+      <workItem from="1739273835346" duration="14401000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <option name="closed" value="true" />
@@ -370,7 +404,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732265977883</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="/">
+      <option name="closed" value="true" />
+      <created>1738152769232</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1738152769232</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -395,7 +437,8 @@
     <MESSAGE value="исправная панель администратора" />
     <MESSAGE value="исправная панель администратора 18.11" />
     <MESSAGE value="продуктив добродела" />
-    <option name="LAST_COMMIT_MESSAGE" value="продуктив добродела" />
+    <MESSAGE value="/" />
+    <option name="LAST_COMMIT_MESSAGE" value="/" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject2$app__1_.coverage" NAME="app (1) Coverage Results" MODIFIED="1730121907476" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

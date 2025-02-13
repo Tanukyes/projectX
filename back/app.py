@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_cors import CORS
-from back import create_app
+from .__init__ import create_app
 
 app = create_app()  # Создаем экземпляр Flask приложения
 

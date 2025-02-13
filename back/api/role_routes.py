@@ -1,6 +1,6 @@
 # back/api/role_routes.py
 from flask import Blueprint, jsonify
-from back.models.role import Role
+from ..models import Role
 
 role_blueprint = Blueprint('roles', __name__)
 

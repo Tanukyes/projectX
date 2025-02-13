@@ -1,9 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from flask_cors import cross_origin
-from back.models.user import User
-from back.models.role import Role
-from back.extensions import db
+from ..models import User, Role
+from ..extensions import db
 from flask_jwt_extended import create_access_token
 
 auth_blueprint = Blueprint('auth', __name__)

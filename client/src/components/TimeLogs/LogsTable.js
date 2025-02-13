@@ -16,7 +16,7 @@ function LogsTable({refreshTrigger}) {
     const [editPopupOpen, setEditPopupOpen] = useState(false);
     const [deletePopupOpen, setDeletePopupOpen] = useState(false);
     const [editLogData, setEditLogData] = useState(null);
-    const [setButtonPosition] = useState({ top: 0, left: 0 });
+    const [buttonPosition, setButtonPosition] = useState({ top: 0, left: 0 });
 
 
     // Функция для получения логов

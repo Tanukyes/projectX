@@ -105,7 +105,7 @@ function TimeLogs() {
 
     const handleAddRecord = async () => {
         try {
-            await axios.post('http://localhost:5000/api/time_logs', newRecord, {
+            const response = await axios.post('http://localhost:5000/api/time_logs', newRecord, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
 
@@ -244,7 +244,7 @@ function TimeLogs() {
         // Формирование данных для Excel
         const worksheetData = [
             [{ v: `${selectedUserFio}: ${userSummary}`, s: { alignment: { horizontal: 'center' } } }],
-            ["Дата", "Время с", "Время по", "Тип", "Количество времени", "Причина"], // Заголовки
+            ["Дата", "Время с", "Время по", "Тип", "Количество времени", "Примечание"], // Заголовки
             ...selectedUserLogs.map((log) => [
                 log.log_date,
                 log.start_time,
@@ -398,9 +398,10 @@ function TimeLogs() {
                             <option value="time_off">Отгул</option>
                             <option value="work_time">Переработка</option>
                             <option value="polyclinic">Поликлиника</option>
+                            <option value="remote">Удаленка</option>
                         </select>
 
-                        <label>Причина:</label>
+                        <label>Примечание:</label>
                         <textarea
                             value={newRecord.note}
                             onChange={(e) => setNewRecord({ ...newRecord, note: e.target.value })}

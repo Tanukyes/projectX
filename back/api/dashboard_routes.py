@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
-from back.models import User
+from ..models import User
 
 dashboard_blueprint = Blueprint('dashboard', __name__)
 

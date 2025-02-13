@@ -5,6 +5,8 @@ import './Dashboard.css';
 import Dobrodel from './Dobrodel/Dobrodel';
 import TimeLogs from './TimeLogs/TimeLogs';
 import { AiOutlineMenu } from 'react-icons/ai';
+import Changes from "./Changes/Changes";
+import Documentation from "./Documentation/Documentation";
 
 function Dashboard() {
   const { error, loading } = useDataLoader('/api/dashboard');
@@ -70,7 +72,7 @@ function Dashboard() {
             </button>
           )}
 
-          {(userRole === 'user' || userRole === 'smena' || userRole === 'upSmena' || userRole === 'upUser') && (
+          {(userRole === 'user' || userRole === 'smena' || userRole === 'upSmena' || userRole === 'upUser' || userRole === 'powUser') && (
             <button onClick={() => { setActiveTab('documents'); toggleMenu(); }}>
               Журнал документации
             </button>
@@ -94,16 +96,10 @@ function Dashboard() {
           <TimeLogs />
         )}
         {activeTab === 'changes' && showChangesJournal && (
-          <div>
-            <h3>Журнал изменений</h3>
-            <p>Здесь отображаются изменения...</p>
-          </div>
+          <Changes />
         )}
         {activeTab === 'documents' && showDocumentsJournal && (
-          <div>
-            <h3>Журнал документации</h3>
-            <p>Здесь отображаются документы...</p>
-          </div>
+            <Documentation/>
         )}
       </div>
     </div>

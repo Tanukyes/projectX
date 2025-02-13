@@ -13,6 +13,8 @@ function AdminPage() {
   const [fio, setFio] = useState("");
   const [roles, setRoles] = useState([]);
   const [feedback, setFeedback] = useState("");
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackType, setFeedbackType] = useState("success");
   const [newPattern, setNewPattern] = useState("");
   const [patterns, setPatterns] = useState([]);
   const [selectedPattern, setSelectedPattern] = useState("");
@@ -43,7 +45,7 @@ function AdminPage() {
         setPatterns(patternsResponse?.patterns || []);
       } catch (error) {
         console.error("Ошибка при загрузке данных:", error);
-        showFeedbackMessage("Ошибка при загрузке данных, попробуйте позже.");
+        showFeedbackMessage("Ошибка при загрузке данных, попробуйте позже.", "error");
       }
     };
 
@@ -65,16 +67,18 @@ function AdminPage() {
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
-  const showFeedbackMessage = (message) => {
+  const showFeedbackMessage = (message, type = "success") => {
     setFeedback(message);
-    setTimeout(() => setFeedback(""), 3000);
+    setFeedbackType(type);
+    setShowFeedback(true);
+    setTimeout(() => {setShowFeedback(false);
+                                    setFeedback("");}, 3000);
   };
 
   const handleCreateUser = async (e) => {
     e.preventDefault();
     if (!username || !email || !password) {
-      showFeedbackMessage("Пожалуйста, заполните все обязательные поля.");
-      alert("Пожалуйста, заполните все обязательные поля.");
+      showFeedbackMessage("Пожалуйста, заполните все обязательные поля.", "error");alert("Пожалуйста, заполните все обязательные поля.");
       return;
     }
     try {
@@ -95,11 +99,9 @@ function AdminPage() {
       setFio("");
       const updatedUsers = await apiGet("/api/auth/users");
       setUsers(updatedUsers);
-      alert("Пользователь успешно создан.");
     } catch (error) {
       console.error("Ошибка при создании пользователя:", error);
-      showFeedbackMessage(error?.response?.data?.msg || "Ошибка создания пользователя.");
-      alert("Ошибка создания пользователя.");
+      showFeedbackMessage(error?.response?.data?.msg || "Ошибка создания пользователя.", "error");
     }
   };
 
@@ -114,19 +116,17 @@ function AdminPage() {
       setShowEditPopup(false);
       const updatedUsers = await apiGet("/api/auth/users");
       setUsers(updatedUsers);
-      alert("Данные пользователя успешно обновлены.")
     } catch (error) {
       console.error("Ошибка при обновлении пользователя:", error);
-      showFeedbackMessage(error?.response?.data?.msg || "Ошибка обновления данных пользователя.");
-      alert("Ошибка обновления данных пользователя.");
+      showFeedbackMessage(error?.response?.data?.msg || "Ошибка обновления данных пользователя.", "error");
+
     }
   };
 
   const handleEditUser = () => {
     const user = users.find((user) => user.id === selectedUser);
     if (!user) {
-      showFeedbackMessage("Пожалуйста, выберите пользователя для редактирования.");
-      alert("Пожалуйста, выберите пользователя для редактирования.");
+      showFeedbackMessage("Пожалуйста, выберите пользователя для редактирования.", "error");
       return;
     }
     setEditUser({
@@ -135,7 +135,7 @@ function AdminPage() {
       email: user.email,
       fio: user.fio || "",
       room: user.room || "",
-      password: "",
+      password: user.password || "",
     });
     setShowEditPopup(true);
   };
@@ -218,17 +218,17 @@ function AdminPage() {
   };
 
   return (
-    <div className="admin-page admin-page-container">
-      <div className="admin-header">
-        <h2>Страница администратора</h2>
-        <button className="admin-logout-button" onClick={handleLogout}>Выйти</button>
-      </div>
-
-      {feedback && <div className="feedback-message">{feedback}</div>}
-
-      <div className="admin-section">
-        <h3>Создать нового пользователя</h3>
-        <form onSubmit={handleCreateUser} className="user-form">
+      <div className="admin-page admin-page-container">
+        {showFeedbackMessage && feedback &&
+            ( <div className={`feedback-popup ${feedbackType}`}>{feedback}</div>
+        )}
+        <div className="admin-header">
+          <h2>Страница администратора</h2>
+          <button className="admin-logout-button" onClick={handleLogout}>Выйти</button>
+        </div>
+        <div className="admin-section">
+          <h3>Создать нового пользователя</h3>
+          <form onSubmit={handleCreateUser} className="user-form">
             <input
                 type="text"
                 placeholder="Имя пользователя"
@@ -292,6 +292,81 @@ function AdminPage() {
           </form>
         </div>
 
+        <div className="user-interaction-section">
+          <h3>Редактировать/удалить пользователя</h3>
+          <div className="user-interaction-section-managment">
+            <div className="dropdown-container" ref={dropdownRefUser}>
+              <div
+                  className="dropdown-header"
+                  onClick={() => setDropdownOpenUser(!dropdownOpenUser)}
+              >
+            <span>
+              {users.find((u) => u.id === selectedUser)?.username || 'Выберите пользователя'}
+            </span>
+                <FaCaretDown/>
+              </div>
+              {dropdownOpenUser && (
+                  <div className="dropdown-menu1">
+                    {users.map((user) => (
+                        <div
+                            key={user.id}
+                            className="dropdown-item"
+                            onClick={() => handleUserSelect(user.id)}
+                        >
+                          {user.username}
+                        </div>
+                    ))}
+                  </div>
+              )}
+            </div>
+            <button onClick={handleEditUser}>Редактировать</button>
+            &nbsp;
+            <button onClick={handleDeleteUser}>Удалить</button>
+          </div>
+        </div>
+
+        {showEditPopup && (
+            <div className="export-popup-overlay">
+              <div className="edit-popup">
+                <h3>Редактирование пользователя</h3>
+                <input
+                    type="text"
+                    placeholder="Имя пользователя"
+                    value={editUser.username || ''}
+                    onChange={(e) => setEditUser({...editUser, username: e.target.value})}
+                />
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={editUser.email || ''}
+                    onChange={(e) => setEditUser({...editUser, email: e.target.value})}
+                />
+                <input
+                    type="text"
+                    placeholder="ФИО"
+                    value={editUser.fio || ''}
+                    onChange={(e) => setEditUser({...editUser, fio: e.target.value})}
+                />
+                <input
+                    type="text"
+                    placeholder="Комната"
+                    value={editUser.room || ''}
+                    onChange={(e) => setEditUser({...editUser, room: e.target.value})}
+                />
+                <div className="password-field">
+                  <input
+                      type={showPassword ? "text" : "text"}
+                      placeholder="Пароль"
+                      value={editUser.password}
+                      onChange={(e) => setEditUser({...editUser, password: e.target.value})}
+                  />
+                </div>
+                <button className="save-button" onClick={handleSaveEditUser}>Сохранить</button>
+                <button className="cancel-button" onClick={() => setShowEditPopup(false)}>Отмена</button>
+              </div>
+            </div>
+        )}
+
         <div className="template-management-section">
           <h3>Управление шаблонами</h3>
           <div className="pattern-management">
@@ -329,81 +404,7 @@ function AdminPage() {
             <button className="DDdelete" onClick={handleDeletePattern}>Удалить шаблон</button>
           </div>
         </div>
-
-        <div className="user-interaction-section">
-          <h3>Редактировать/удалить пользователя</h3>
-          <div className="user-interaction-section-managment">
-          <div className="dropdown-container" ref={dropdownRefUser}>
-            <div
-                className="dropdown-header"
-                onClick={() => setDropdownOpenUser(!dropdownOpenUser)}
-            >
-            <span>
-              {users.find((u) => u.id === selectedUser)?.username || 'Выберите пользователя'}
-            </span>
-              <FaCaretDown/>
-            </div>
-            {dropdownOpenUser && (
-                <div className="dropdown-menu1">
-                  {users.map((user) => (
-                      <div
-                          key={user.id}
-                          className="dropdown-item"
-                          onClick={() => handleUserSelect(user.id)}
-                      >
-                        {user.username}
-                      </div>
-                  ))}
-                </div>
-            )}
-          </div>
-          <button onClick={handleEditUser}>Редактировать</button> &nbsp;
-          <button onClick={handleDeleteUser}>Удалить</button>
-        </div>
-        </div>
-
-        {showEditPopup && (
-            <div className="export-popup-overlay">
-              <div className="edit-popup">
-                <h3>Редактирование пользователя</h3>
-                <input
-                    type="text"
-                    placeholder="Имя пользователя"
-                    value={editUser.username || ''}
-                    onChange={(e) => setEditUser({...editUser, username: e.target.value})}
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={editUser.email || ''}
-                    onChange={(e) => setEditUser({...editUser, email: e.target.value})}
-                />
-                <input
-                    type="text"
-                    placeholder="ФИО"
-                    value={editUser.fio || ''}
-                    onChange={(e) => setEditUser({...editUser, fio: e.target.value})}
-                />
-                <input
-                    type="text"
-                    placeholder="Комната"
-                    value={editUser.room || ''}
-                    onChange={(e) => setEditUser({...editUser, room: e.target.value})}
-                />
-                <div className="password-field">
-                  <input
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="Пароль"
-                      value={editUser.password || ''}
-                      onChange={(e) => setEditUser({...editUser, password: e.target.value})}
-                  />
-                </div>
-                <button className="save-button" onClick={handleSaveEditUser}>Сохранить</button>
-                <button className="cancel-button" onClick={() => setShowEditPopup(false)}>Отмена</button>
-              </div>
-            </div>
-        )}
-    </div>
+      </div>
   );
 }
 

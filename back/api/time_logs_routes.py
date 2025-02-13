@@ -1,9 +1,8 @@
-from back.extensions import db
+from ..extensions import db
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime, timedelta, timezone
-from back.models import User
-from back.models.time_logs import TimeLog
+from ..models import User, TimeLog
 
 time_logs_blueprint = Blueprint('time_logs', __name__, url_prefix='/api')
 
@@ -158,8 +157,7 @@ def add_time_log():
 
         if start_time >= end_time:
             return jsonify({"msg": "Время окончания должно быть позже времени начала"}), 400
-        if log_date > datetime.now(timezone.utc).date():
-            return jsonify({"msg": "Дата не может быть в будущем"}), 400
+
         new_log = TimeLog(
             user_id=data['user_id'],
             log_date=log_date,

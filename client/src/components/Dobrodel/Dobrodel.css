@@ -1,6 +1,6 @@
 /* Основной контейнер Dobrodel */
 .dobrodel-container {
-  font-family: Arial, sans-serif;;
+  font-family: Arial, sans-serif;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -140,14 +140,6 @@
 
 .save-button:hover {
   color: #28a745;
-}
-
-/* Контейнер для поиска и таблицы */
-.dobrodel-content {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 10px;
 }
 
 .search-container {
@@ -294,10 +286,6 @@
 
 .refresh-button:hover {
   color: #007bff;
-}
-
-.refresh-button:active {
-  transform: rotate(180deg);
 }
 
 /* Кнопка для экспорта в Excel */

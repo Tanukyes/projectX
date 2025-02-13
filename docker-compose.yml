@@ -1,0 +1,53 @@
+version: '3.12'
+
+services:
+  db:
+    image: postgres:17
+    container_name: dbUltiARM
+    restart: always
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile_back
+    container_name: backendUltiARM
+    ports:
+      - "5000:5000"
+    environment:
+      # Укажем модуль Flask, где лежит приложение
+      # Если у вас главный файл: back/app.py, достаточно:
+      - FLASK_APP=app.py
+      # Или, если приложение создаётся внутри back/__init__.py, укажите:
+      # - FLASK_APP=back
+      - FLASK_ENV=production
+
+      # Для SQLAlchemy, если ваш код читает DATABASE_URL
+      # (Обратите внимание, что хост = db, а не localhost)
+      - DATABASE_URL=postgresql://postgres:1234@localhost/mydb
+
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile_front
+    container_name: frontendUltiARM
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    # Отключаем примонтированные тома, чтобы не затирать содержимое контейнера
+    # Если вам нужна "горячая" разработка (hot reload), подключайте
+    # volumes с осторожностью.
+
+volumes:
+  pgdata:

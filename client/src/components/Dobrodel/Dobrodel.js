@@ -134,8 +134,6 @@ function Dobrodel() {
     setShowPatternDropdown(false); // Закрываем dropdown после выбора
   };
 
-
-
   const getCurrentDate = () => new Date().toISOString().split("T")[0];
   const getCurrentTime = () => new Date().toTimeString().slice(0, 5);
 

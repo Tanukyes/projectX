@@ -278,6 +278,7 @@ h2 {
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-weight: bold;
 }
 
 .user-interaction-section button:nth-child(2) {
@@ -317,4 +318,32 @@ h2 {
 .admin-logout-button:hover{
   background-color: #a71d2a;
   transform: scale(1.05);
+}
+
+/* Стили для всплывающего окна с сообщением */
+.feedback-popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  text-align: center;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+.feedback-popup.success {
+  background-color: rgba(0, 128, 0, 0.9);
+}
+.feedback-popup.error {
+  background-color: rgba(255, 0, 0, 0.9);
+}
+/* Анимация исчезновения */
+.feedback-popup.fade-out {
+  opacity: 0;
 }

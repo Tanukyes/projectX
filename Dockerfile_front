@@ -1,0 +1,21 @@
+# Этап сборки React-приложения
+FROM node:18 AS build
+
+WORKDIR /app
+
+# Установим зависимости фронтенда
+COPY client/package*.json ./
+RUN npm install
+
+# Скопируем все файлы фронта и соберём
+COPY client/ .
+RUN npm run build
+
+# Этап финального образа на базе nginx
+FROM nginx:latest
+
+# Скопируем статические файлы (собранный React) в корень Nginx
+COPY --from=build /app/build /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
